@@ -3,13 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>Laman Web Python + HTML</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='datatables/datatables.min.css') }}">
+	<link rel="">
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         h1 { color: #2c3e50; }
     </style>
 </head>
 <body>
-    <h1>Selamat Datang ke Laman Web Saya!</h1>
-    <p>Halaman HTML ini dipaparkan menggunakan backend Python.</p>
+	<div class="container mt-4">
+		<div class="desktop-table mt-4">
+			<form action="" method="post">
+
+				<div class="d-flex justify-content-center gap-2">
+					<input type="text"
+						   class="form-control"
+						   id="link"
+						   name="link"
+						   value=""
+						   style="width: 500px;">
+
+					<button type="submit" class="btn btn-primary">
+						Submit
+					</button>
+				</div>
+
+				<div class="text-center mt-2" style="width: 500px; margin-left: auto; margin-right: auto;">
+					<label for="link" class="form-label text-muted">
+						Contoh: https://starlika.cc
+					</label>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="d-flex justify-content-center gap-2">
+			<div class="col-md-3">
+				<div class="card shadow-sm border-0">
+					<div class="card-body">
+						<h6 class="text-muted">Total Account</h6>
+						<h2 class="fw-bold text-primary" id="totalrunning">0</h2>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-3">
+				<div class="card shadow-sm border-0">
+					<div class="card-body">
+						<h6 class="text-muted">Total Running</h6>
+						<h2 class="fw-bold text-primary" id="totalrunning">0</h2>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="card shadow-sm border-0">
+					<div class="card-body">
+						<h6 class="text-muted">Date</h6>
+						<h2 class="fw-bold text-primary" id="date">-</h2>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="card shadow-sm border-0">
+					<div class="card-body">
+						<h6 class="text-muted">Time</h6>
+						<h2 class="fw-bold text-primary" id="time">-</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="container mt-4">
+        <a href="" class="btn btn-primary">Add Account</a>
+		<a href="" class="btn btn-danger">Update</a>
+		<button onclick="" class="btn btn-primary">Autorun</button>
+		<button onclick="" class="btn btn-primary">Trade All</button>
+		<button onclick="" class="btn btn-primary">Transfer All</button>
+		<a href="" class="btn btn-primary">Percentage</a>
+    </div>
+	<div class="container mt-4">
+        <table id="mytable">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>Sayang</td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+	<script src="{{ url_for('static', filename='datatables/datatables.min.js') }}"></script>
+	<script defer>
+		new DataTable('#mytable');
+	</script>
 </body>
 </html>
