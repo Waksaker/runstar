@@ -1,0 +1,2 @@
+Intall package
+1) python -m pip install Flask tzdata requests mysql-connector-python

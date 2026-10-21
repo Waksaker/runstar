@@ -15,14 +15,14 @@
 <body>
 	<div class="container mt-4">
 		<div class="desktop-table mt-4">
-			<form action="" method="post">
+			<form action="{{ url_for('submit') }}" method="post">
 
 				<div class="d-flex justify-content-center gap-2">
 					<input type="text"
 						   class="form-control"
 						   id="link"
 						   name="link"
-						   value=""
+						   value="{{ link }}"
 						   style="width: 500px;">
 
 					<button type="submit" class="btn btn-primary">
@@ -45,7 +45,7 @@
 				<div class="card shadow-sm border-0">
 					<div class="card-body">
 						<h6 class="text-muted">Total Account</h6>
-						<h2 class="fw-bold text-primary" id="totalrunning">0</h2>
+						<h2 class="fw-bold text-primary" id="totalaccount">0</h2>
 					</div>
 				</div>
 			</div>
@@ -103,8 +103,35 @@
 		</table>
     </div>
 	<script src="{{ url_for('static', filename='datatables/datatables.min.js') }}"></script>
-	<script defer>
-		new DataTable('#mytable');
+	<script>
+		function updateMasa() {
+			fetch('/app/masa')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Gagal mendapatkan data');
+					}
+					return response.json();
+				})
+				.then(data => {
+					document.getElementById('totalaccount').textContent =
+						data.jumlah_pengguna;
+					document.getElementById('totalrunning').textContent =
+						data.jumlah_running;
+					document.getElementById('date').textContent =
+						data.tarikh;
+					document.getElementById('time').textContent =
+						data.time;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+
+		// Jalankan apabila page dibuka
+		updateMasa();
+
+		// Update setiap 1 saat
+		setInterval(updateMasa, 1000);
 	</script>
 </body>
 </html>
