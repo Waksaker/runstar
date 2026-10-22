@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/sweetalert2.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebarmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatables.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables.css') }}" />
+
+    <style>
+        .table thead th {
+            background-color: #495057 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+
+    <div class="container">
+
+        <span class="navbar-brand">
+            Sistem Starlika
+        </span>
+
+    </div>
+
+</nav>
+
+
+<div class="container mt-4">
+
+    <h2>
+        Tambah Pengguna
+    </h2>
+
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Kembali</a>
+
+    <div class="mt-4">
+
+        <form method="POST" action="{{ url_for('add_user') }}">
+            <div class="mb-3">
+                <label for="username" class="form-label">Nama Pengguna</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Kata Laluan</label>
+                <input type="text" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+
+</html>

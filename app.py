@@ -19,11 +19,20 @@ def index():
     cursor.execute("SELECT * FROM link")
     rows = cursor.fetchall()
     link = rows[0]['name'] if rows else ""
+    cursor1 = db.cursor(dictionary=True)
+    cursor1.execute("SELECT * FROM pengguna WHERE trades = 0 AND runtrans = 0")
+    rows1 = cursor1.fetchone()
+    if rows1:
+        statusupdate = "update"
+    else:
+        statusupdate = "tidak update"
     cursor.close()
+    cursor1.close()
     db.close()
     return render_template(
         "index.html", 
-        link=link
+        link=link,
+        statusupdate = statusupdate
     )
 
 @app.route("/submit", methods=["POST"])
@@ -126,6 +135,52 @@ def edit_user(user_id):
     cursor.close()
     conn.close()
     return render_template('edit.html', user=user)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        trade = '3'
+        #time = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%H:%M:%S')
+        date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
+
+        conn = connect_database()
+        cursor = conn.cursor()
+
+        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '00:00:00', date))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for('index'))
+
+    return render_template('add_user.html')
+
+@app.route('/delete/<int:deleteid>', methods=['GET', 'POST'])
+def delete_list(deleteid):
+    print(f"Id : {deleteid}")
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM pengguna WHERE id=%s", (deleteid,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('index'))
+
+@app.route('/update/')
+def update():
+    conn = connect_database()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("UPDATE pengguna SET runtrans=%s WHERE statranfer=%s", (1, 1))
+    cursor1 = conn.cursor(dictionary=True)
+    cursor1.execute("UPDATE pengguna SET trades=%s", (3,))
+    conn.commit()
+    cursor.close()
+    cursor1.close()
+    conn.close
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -83,8 +83,10 @@
 		</div>
 	</div>
     <div class="container mt-4">
-        <a href="" class="btn btn-primary">Add Account</a>
-		<a href="" class="btn btn-danger">Update</a>
+        <a href="{{ url_for('add_user')}}" class="btn btn-primary">Add Account</a>
+	{% if statusupdate == 'update' %}
+	    <a href="{{url_for('update')}}" class="btn btn-danger">Update</a>
+	{% endif %}
 		<button onclick="" class="btn btn-primary">Autorun</button>
 		<button onclick="" class="btn btn-primary">Trade All</button>
 		<button onclick="" class="btn btn-primary">Transfer All</button>
@@ -97,7 +99,6 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
-                            <th>Id</th>
                             <th>Username</th>
                             <th>Password</th>
                             <th>Trade</th>
@@ -132,7 +133,6 @@
                             return meta.row + 1;
                         }
                     },
-                    { data: 'id' },
                     { data: 'username' },
                     { data: 'password' },
                     { data: 'trades' },
@@ -151,14 +151,14 @@
                         }
                     },
 					{
-						data: 'statranfer',
+						data: 'runtrans',
 						render: function (data, type, row) {
 							if (type !== 'display') return data;
 							if (data == 1) {
-								return '<span class="badge bg-success">TRANSFER</span>';
+								return '<span class="badge bg-danger">TRANSFER</span>';
 							}
 							if (data == 0) {
-								return '<span class="badge bg-danger">NO TRANSFER</span>';
+								return '<span class="badge bg-success">NO TRANSFER</span>';
 							}
 							return '<span class="badge bg-secondary">UNKNOWN</span>';
 						}
