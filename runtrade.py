@@ -1,4 +1,3 @@
-
 import undetected_chromedriver as uc
 import time
 import mysql.connector
@@ -46,10 +45,15 @@ def main():
         options = uc.ChromeOptions()
         options.add_argument("--start-maximized")
 
-        driver = uc.Chrome(options=options, version_main=155)
+        driver = uc.Chrome(
+            option=options,
+            version_main=155,
+            supprress_welcome=True,
+            headless=False
+        )
         driver.get(url_index)
 
-        time.sleep(8)
+        time.sleep(3)
 
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
@@ -116,6 +120,11 @@ def main():
         time.sleep(3) 
 
         driver.get(url_checkin)
+
+        # Tetapkan zoom selepas halaman mula dimuatkan
+        driver.execute_script(
+            "document.body.style.zoom = '50%'"
+        )
 
         input("Tekan ENTER untuk menutup Chrome...")
 

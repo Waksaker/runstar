@@ -71,7 +71,7 @@ def main():
 
         driver.get(url_index)
 
-        time.sleep(2)
+        time.sleep(3)
 
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
