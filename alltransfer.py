@@ -1,14 +1,18 @@
 import mysql.connector
 import time
 import subprocess
-
 def connect_database():
-    host = "localhost"
-    user = "root"
-    password = ""
-    database = "webpy"
-    return mysql.connector.connect(host=host, user=user, password=password, database=database)
-
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="webpy"
+        )
+        return conn
+    except mysql.connector.Error as err:
+        print(f"Error Database: {err}")
+        return None
 def run(username, password, iduser):
     filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
     filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\runtransfer.py"
@@ -25,11 +29,14 @@ def run(username, password, iduser):
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
         return
-
 def main():
     while True:
+        conn = connect_database()
+        if conn is None:
+            print("Gagal connect database. Cuba semula...")
+            time.sleep(5)
+            continue
         try:
-            conn = connect_database()
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
                 SELECT 
@@ -45,6 +52,8 @@ def main():
                 password = row['password']
                 iduser = row['id']
                 run(username, password, iduser)
+                time.sleep(120)
+                continue
             else:
                 print("Tiada pengguna dengan runtrans =1")
                 cursor.close()
@@ -55,7 +64,7 @@ def main():
         except mysql.connector.Error as err:
             print(f"Masalah Database: {err}")
             break
-        time.sleep(180)
-
+        time.sleep(2)
+        continue
 if __name__ == "__main__":
     main()

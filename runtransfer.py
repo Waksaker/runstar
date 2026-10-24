@@ -94,10 +94,10 @@ def main():
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", lang_btn)
             time.sleep(0.5)
             lang_btn.click()
-            print("✅ Berjaya mengklik butang MY/EN English")
+            print("Berjaya mengklik butang MY/EN English")
             time.sleep(1)
         except Exception as e:
-            print(f"⚠️ Gagal mengklik butang: {repr(e)}")
+            print(f"Gagal mengklik butang: {repr(e)}")
         # === TAMAT BAHAGIAN KLIK ===
 
         # === 2. ISI NAMA PENGGUNA ===
@@ -108,9 +108,9 @@ def main():
             )
             username_field.clear()
             username_field.send_keys(username_input)
-            print(f"✅ Nama pengguna dimasukkan: {username_input}")
+            print(f"Nama pengguna dimasukkan: {username_input}")
         except Exception as e:
-            print(f"⚠️ Gagal isi nama pengguna: {repr(e)}")
+            print(f"Gagal isi nama pengguna: {repr(e)}")
 
         # === 3. ISI KATA LALUAN ===
         try:
@@ -119,9 +119,9 @@ def main():
             )
             password_field.clear()
             password_field.send_keys(password_input)
-            print("✅ Kata laluan dimasukkan")
+            print("Kata laluan dimasukkan")
         except Exception as e:
-            print(f"⚠️ Gagal isi kata laluan: {repr(e)}")
+            print(f"Gagal isi kata laluan: {repr(e)}")
 
         # === 4. KLIK BUTANG SIGN IN ===
         try:
@@ -131,9 +131,9 @@ def main():
             driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", signin_btn)
             time.sleep(0.5)
             signin_btn.click()
-            print("✅ Berjaya menekan butang Sign In")
+            print("Berjaya menekan butang Sign In")
         except Exception as e:
-            print(f"⚠️ Gagal tekan butang Sign In: {repr(e)}")
+            print(f"Gagal tekan butang Sign In: {repr(e)}")
 
         time.sleep(3)
 
@@ -145,14 +145,14 @@ def main():
             )
             amount_text = amount_element.text.strip()
             print("=" * 40)
-            print(f"💰 Jumlah Available Profit & Commission: {amount_text} USD")
+            print(f"Jumlah Available Profit & Commission: {amount_text} USD")
             print("=" * 40)
             # Tukar ke nombor
             bersih = amount_text.replace("$", "").replace("USD", "").strip()
             bersih = bersih.replace(",", ".")
             jumlah_nilai = float(bersih)
             if jumlah_nilai >= 1.00:
-                print("✅ Jumlah melebihi 1,00 USD. Teruskan proses.")
+                print("Jumlah melebihi 1,00 USD. Teruskan proses.")
                 # === 6. KLIK KAD PROFIT COMMISSION ===
                 try:
                     profit_card = wait.until(
@@ -163,10 +163,10 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", profit_card)
                     time.sleep(0.5)
                     profit_card.click()
-                    print("✅ Berjaya mengklik kad Profit Commission")
+                    print("Berjaya mengklik kad Profit Commission")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal mengklik kad Profit Commission: {repr(e)}")
+                    print(f"Gagal mengklik kad Profit Commission: {repr(e)}")
 
                 # === 7. KLIK trading balance ===
                 try:
@@ -178,10 +178,10 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", trading_option)
                     time.sleep(0.5)
                     trading_option.click()
-                    print("✅ Berjaya memilih Trading Balance")
+                    print("Berjaya memilih Trading Balance")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal memilih Trading Balance: {repr(e)}")
+                    print(f"Gagal memilih Trading Balance: {repr(e)}")
 
                 # === 8. KLIK BUTANG MAX ===
                 try:
@@ -193,10 +193,10 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", max_btn)
                     time.sleep(0.5)
                     max_btn.click()
-                    print("✅ Berjaya menekan butang Max — jumlah penuh diisi")
+                    print("Berjaya menekan butang Max jumlah penuh diisi")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang Max: {repr(e)}")
+                    print(f"Gagal tekan butang Max: {repr(e)}")
 
                 # === 9. KLIK CONFIRM TRANSFER ===
                 try:
@@ -207,12 +207,12 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", confirm_btn)
                     time.sleep(0.5)
                     confirm_btn.click()
-                    print("✅ ✅ Berjaya menekan Confirm Transfer!")
+                    print("Berjaya menekan Confirm Transfer!")
                     updateruntransfer(id_input)
-                    print("🔄 Pemindahan sedang diproses...")
+                    print("Pemindahan sedang diproses...")
                     time.sleep(3)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan Confirm Transfer: {repr(e)}")
+                    print(f"Gagal tekan Confirm Transfer: {repr(e)}")
 
                 # === 10. TUNGGU & KLIK BUTANG OK ===
                 try:
@@ -224,10 +224,10 @@ def main():
                     )
                     time.sleep(0.5)
                     ok_btn.click()
-                    print("✅ ✅ Pemindahan Berjaya! Butang OK ditekan.")
+                    print("Pemindahan Berjaya! Butang OK ditekan.")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang OK: {repr(e)}")
+                    print(f"Gagal tekan butang OK: {repr(e)}")
 
                 driver.get(url_logout)
 
@@ -248,10 +248,10 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", logout_btn)
                     time.sleep(0.5)
                     logout_btn.click()
-                    print("✅ Berjaya menekan butang Logout")
+                    print("Berjaya menekan butang Logout")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang Logout: {repr(e)}")
+                    print(f"Gagal tekan butang Logout: {repr(e)}")
 
                 # === 10. TUNGGU & KLIK BUTANG OK ===
                 try:
@@ -263,25 +263,23 @@ def main():
                     )
                     time.sleep(0.5)
                     ok_btn.click()
-                    print("✅ ✅ Pemindahan Berjaya! Butang OK ditekan.")
+                    print("Pemindahan Berjaya! Butang OK ditekan.")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang OK: {repr(e)}")
+                    print(f"Gagal tekan butang OK: {repr(e)}")
 
                 time.sleep(2)
 
                 driver.quit()
             else:
-                print("❌ Jumlah kurang daripada 1,00 USD. Proses dihentikan.")
+                print("Jumlah kurang daripada 1,00 USD. Proses dihentikan.")
                 driver.get(url_logout)
-                
                 time.sleep(2)
-                
                 # Tetapkan zoom selepas halaman mula dimuatkan
                 driver.execute_script(
                     "document.body.style.zoom = '50%'"
                 )
-
+                updateruntransfer(id_input)
                 # Tekan butang Logout
                 try:
                     logout_btn = wait.until(
@@ -292,10 +290,10 @@ def main():
                     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", logout_btn)
                     time.sleep(0.5)
                     logout_btn.click()
-                    print("✅ Berjaya menekan butang Logout")
+                    print("Berjaya menekan butang Logout")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang Logout: {repr(e)}")
+                    print(f"Gagal tekan butang Logout: {repr(e)}")
 
                 # === 10. TUNGGU & KLIK BUTANG OK ===
                 try:
@@ -307,26 +305,26 @@ def main():
                     )
                     time.sleep(0.5)
                     ok_btn.click()
-                    print("✅ ✅ Pemindahan Berjaya! Butang OK ditekan.")
+                    print("Pemindahan Berjaya! Butang OK ditekan.")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Gagal tekan butang OK: {repr(e)}")
+                    print(f"Gagal tekan butang OK: {repr(e)}")
 
                 time.sleep(2)
 
                 driver.quit()
 
         except Exception as e:
-            print(f"⚠️ Gagal tarik jumlah: {repr(e)}")
+            print(f"Gagal tarik jumlah: {repr(e)}")
             # Cuba pemilih alternatif jika yang atas tak berfungsi
             try:
                 amount_element = driver.find_element(By.CSS_SELECTOR, '.portfolio-amount-container .portfolio-amount')
                 amount_text = amount_element.text.strip()
                 print("=" * 40)
-                print(f"💰 Jumlah (cara ke-2): {amount_text} USD")
+                print(f"Jumlah (cara ke-2): {amount_text} USD")
                 print("=" * 40)
             except Exception as e2:
-                print(f"❌ Cara ke-2 juga gagal: {repr(e2)}")
+                print(f"Cara ke-2 juga gagal: {repr(e2)}")
 
         # input("Tekan ENTER untuk menutup Chrome...")
 
