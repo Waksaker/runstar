@@ -4,11 +4,17 @@ import mysql.connector
 from zoneinfo import ZoneInfo
 from datetime import datetime,timedelta
 def database():
-    host = "localhost"
-    user = "root"
-    password = ""
-    database = "webpy"
-    return mysql.connector.connect(host=host, user=user, password=password, database=database)
+    try:
+        return mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="webpy"
+        )
+    except Exception as e:
+        print(f"[RALAT] Sambungan gagal: {repr(e)}")
+        return None
+
 def sound():
     playsound(r"C:\Users\faris\OneDrive\Desktop\runstar\coin.mp3")
 def updatestat(conn, iduser):
@@ -18,6 +24,9 @@ def updatestat(conn, iduser):
 def main():
     while True:
         conn=database()
+        if conn is None:
+            print(f"Database tidak fungsi")
+            continue
         cursor=conn.cursor()
         cursor.execute("SELECT * FROM pengguna WHERE status = 1 AND masa_akhir != '00:00:00'")
         rows=cursor.fetchall()
