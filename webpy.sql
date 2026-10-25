@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 20, 2026 at 02:53 AM
+-- Generation Time: Oct 25, 2026 at 03:21 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -38,7 +38,7 @@ CREATE TABLE `link` (
 --
 
 INSERT INTO `link` (`id`, `name`, `updated`) VALUES
-(1, 'https://starlika.cc', '2026-10-13 13:08:00');
+(1, 'https://starlika.net', '2026-10-13 13:08:00');
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE `pengguna` (
   `status` int NOT NULL,
   `statranfer` int NOT NULL,
   `runtrans` int NOT NULL,
-  `masa_akhir` time NOT NULL,
+  `masa_akhir` text NOT NULL,
   `date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -86,31 +86,31 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `statranfer`, `runtrans`, `masa_akhir`, `date`) VALUES
-(2, 'farishdanial', 'waksaker1', 2, 1, 0, 0, '11:15:48', '2026-10-20'),
-(3, 'farishdanial01', 'waksaker1', 2, 1, 1, 1, '11:22:51', '2026-10-20'),
-(4, 'farishdanial02', 'waksaker1', 2, 1, 1, 1, '11:29:47', '2026-10-20'),
-(5, 'farishdanial03', 'waksaker1', 2, 1, 1, 1, '11:36:50', '2026-10-20'),
-(6, 'farishdanial04', 'waksaker1', 2, 1, 1, 1, '11:43:55', '2026-10-20'),
-(7, 'nisa08', 'Dsnisya86@', 2, 1, 1, 1, '11:50:54', '2026-10-20'),
-(8, 'nisa09', 'Dsnisya86@', 2, 1, 1, 1, '11:56:23', '2026-10-20'),
-(9, 'nisa10', 'Dsnisya86@', 2, 1, 1, 1, '11:59:16', '2026-10-20'),
-(10, 'nisa11', 'Dsnisya86@', 2, 1, 1, 1, '12:02:18', '2026-10-20'),
-(11, 'cantik08', 'Dsnisya86@', 2, 1, 1, 1, '12:05:18', '2026-10-20'),
-(12, 'cantik09', 'Dsnisya86@', 2, 1, 1, 1, '12:08:22', '2026-10-20'),
-(13, 'mantoba', 'waksaker1', 2, 1, 0, 0, '12:11:21', '2026-10-20'),
-(14, 'sharipah', 'waksaker1', 2, 1, 0, 0, '12:14:28', '2026-10-20'),
-(18, 'cantik02', 'Dsnisya86@', 2, 1, 1, 1, '12:17:21', '2026-10-20'),
-(19, 'cantik03', 'Dsnisya86@', 2, 1, 1, 1, '12:20:33', '2026-10-20'),
-(20, 'cantik04', 'Dsnisya86@', 2, 1, 1, 1, '12:23:23', '2026-10-20'),
-(21, 'cantik05', 'Dsnisya86@', 2, 1, 1, 1, '12:26:22', '2026-10-20'),
-(22, 'cantik06', 'Dsnisya86@', 2, 1, 1, 1, '12:29:26', '2026-10-20'),
-(23, 'cantik07', 'Dsnisya86@', 2, 1, 1, 1, '12:32:23', '2026-10-20'),
-(24, 'nisa04', 'Dsnisya86@', 2, 1, 1, 1, '12:35:34', '2026-10-20'),
-(25, 'nisa05', 'Dsnisya86@', 2, 1, 1, 1, '12:38:28', '2026-10-20'),
-(26, 'nisa06', 'Dsnisya86@', 2, 1, 1, 1, '12:41:21', '2026-10-20'),
-(27, 'nisa07', 'Dsnisya86@', 2, 1, 1, 1, '12:44:29', '2026-10-20'),
-(28, 'richarissa', 'Dsnisya86@', 2, 1, 0, 0, '12:47:27', '2026-10-20'),
-(29, 'richarissa1', 'Dsnisya86@', 2, 1, 1, 1, '12:50:26', '2026-10-20');
+(2, 'farishdanial', 'waksaker1', 0, 1, 0, 0, '00:12:35', '2026-10-20'),
+(3, 'farishdanial01', 'waksaker1', 0, 1, 1, 0, '00:14:53', '2026-10-20'),
+(4, 'farishdanial02', 'waksaker1', 0, 1, 1, 0, '00:17:14', '2026-10-20'),
+(5, 'farishdanial03', 'waksaker1', 0, 1, 1, 0, '00:19:34', '2026-10-20'),
+(6, 'farishdanial04', 'waksaker1', 0, 1, 1, 0, '00:21:55', '2026-10-20'),
+(7, 'nisa08', 'Dsnisya86@', 0, 1, 1, 0, '00:24:15', '2026-10-20'),
+(8, 'nisa09', 'Dsnisya86@', 0, 1, 1, 0, '00:26:41', '2026-10-20'),
+(9, 'nisa10', 'Dsnisya86@', 0, 1, 1, 0, '00:29:03', '2026-10-20'),
+(10, 'nisa11', 'Dsnisya86@', 0, 1, 1, 0, '00:31:35', '2026-10-20'),
+(11, 'cantik08', 'Dsnisya86@', 0, 1, 1, 0, '00:33:56', '2026-10-20'),
+(12, 'cantik09', 'Dsnisya86@', 0, 1, 1, 0, '00:36:32', '2026-10-20'),
+(13, 'mantoba', 'waksaker1', 0, 1, 0, 0, '00:39:09', '2026-10-20'),
+(14, 'sharipah', 'waksaker1', 0, 1, 0, 0, '00:43:05', '2026-10-20'),
+(18, 'cantik02', 'Dsnisya86@', 0, 1, 1, 0, '00:45:23', '2026-10-20'),
+(19, 'cantik03', 'Dsnisya86@', 0, 1, 1, 0, '00:47:52', '2026-10-20'),
+(20, 'cantik04', 'Dsnisya86@', 0, 1, 1, 0, '00:50:12', '2026-10-20'),
+(21, 'cantik05', 'Dsnisya86@', 0, 1, 1, 0, '00:52:35', '2026-10-20'),
+(22, 'cantik06', 'Dsnisya86@', 0, 1, 1, 0, '00:57:04', '2026-10-20'),
+(23, 'cantik07', 'Dsnisya86@', 0, 1, 1, 0, '00:59:27', '2026-10-20'),
+(24, 'nisa04', 'Dsnisya86@', 0, 1, 1, 0, '01:01:48', '2026-10-20'),
+(25, 'nisa05', 'Dsnisya86@', 0, 1, 1, 0, '01:04:26', '2026-10-20'),
+(26, 'nisa06', 'Dsnisya86@', 0, 1, 1, 0, '01:06:48', '2026-10-20'),
+(27, 'nisa07', 'Dsnisya86@', 0, 1, 1, 0, '01:09:12', '2026-10-20'),
+(28, 'richarissa', 'Dsnisya86@', 0, 1, 0, 0, '01:11:31', '2026-10-20'),
+(29, 'richarissa1', 'Dsnisya86@', 0, 1, 1, 0, '01:14:02', '2026-10-20');
 
 --
 -- Indexes for dumped tables
@@ -155,7 +155,7 @@ ALTER TABLE `log_percent`
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

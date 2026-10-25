@@ -138,11 +138,12 @@ def main():
         time.sleep(3) 
 
         driver.get(url_checkin)
-
+        time.sleep(3)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
         )
+        time.sleep(3)
         #tekan butang checkin
         try:
             wait = WebDriverWait(driver, 10)
@@ -173,11 +174,24 @@ def main():
             time.sleep(1)
         except Exception as e:
             print(f"Gagal tekan clain reward")
+        time.sleep(3)
         driver.get(url_trade)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
         )
+        time.sleep(3)
+        try:
+            wait_pct = WebDriverWait(driver, 10)
+            element_pct = wait_pct.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//span[normalize-space(text())="Profit per Trade"]/following-sibling::span[@class="limit-value success"]')
+                )
+            )
+            teks_pct = element_pct.text.strip()
+            print(f"Nilai peratus: {teks_pct}")
+        except Exception as e:
+            print(f"Nilai peratus: {repr(e)}")
         time.sleep(2)
         try:
             wait_trade = WebDriverWait(driver, 10)

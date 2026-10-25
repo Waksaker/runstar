@@ -52,7 +52,7 @@ def main():
                 password = row['password']
                 iduser = row['id']
                 run(username, password, iduser)
-                time.sleep(120)
+                time.sleep(60)
                 continue
             else:
                 print("Tiada pengguna dengan runtrans =1")

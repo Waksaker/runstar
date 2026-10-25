@@ -15,7 +15,7 @@ def connect_database():
 @app.route("/")
 def index():
     db = connect_database()
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True, buffered=True)
     cursor.execute("SELECT * FROM link")
     rows = cursor.fetchall()
     link = rows[0]['name'] if rows else ""
@@ -44,6 +44,7 @@ def submit():
     # Insert the link into the database
     cursor.execute("UPDATE link SET name = %s WHERE id = 1", (link,))
     db.commit()
+    cursor.close()
     db.close()
     return redirect(url_for('index'))
 
@@ -53,7 +54,7 @@ def masa():
     tarikh = waktu_msia.strftime("%Y-%m-%d")
     time = waktu_msia.strftime("%H:%M:%S")
     db = connect_database()
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True, buffered=True)
     cursor.execute("""
         SELECT
             COUNT(*) AS jumlah_pengguna,
@@ -76,7 +77,7 @@ def masa():
 def get_users():
     try:
         db = connect_database()
-        cursor = db.cursor(dictionary=True)
+        cursor = db.cursor(dictionary=True, buffered=True)
         cursor.execute("SELECT * FROM pengguna")
         rows = cursor.fetchall()
         
@@ -105,13 +106,13 @@ def get_users():
         return jsonify({'users': rows})
     
     except Exception as e:
-        print(f"❌ Ralat di /app/user: {repr(e)}")
+        print(f"Ralat di /app/user: {repr(e)}")
         return jsonify({'error': str(e), 'users': []}), 500
 
 @app.route('/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
     conn = connect_database()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
     
     if request.method == 'POST':
         username = request.form['username']
@@ -150,7 +151,6 @@ def add_user():
 
         cursor.execute("INSERT INTO pengguna (username, password, trades, status, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '00:00:00', date))
         conn.commit()
-
         cursor.close()
         conn.close()
 
@@ -172,14 +172,14 @@ def delete_list(deleteid):
 @app.route('/update/')
 def update():
     conn = connect_database()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute("UPDATE pengguna SET runtrans=%s WHERE statranfer=%s", (1, 1))
     cursor1 = conn.cursor(dictionary=True)
     cursor1.execute("UPDATE pengguna SET trades=%s", (3,))
     conn.commit()
     cursor.close()
     cursor1.close()
-    conn.close
+    conn.close()
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
