@@ -19,7 +19,7 @@ def index():
     cursor.execute("SELECT * FROM link")
     rows = cursor.fetchall()
     link = rows[0]['name'] if rows else ""
-    cursor1 = db.cursor(dictionary=True)
+    cursor1 = db.cursor(dictionary=True, buffered=True)
     cursor1.execute("SELECT * FROM pengguna WHERE trades = 0 AND runtrans = 0")
     rows1 = cursor1.fetchone()
     if rows1:
