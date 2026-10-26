@@ -2,16 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import mysql.connector
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
-
+import subprocess
+import os
 app = Flask(__name__)
-
 def connect_database():
     host = "localhost"
     user = "root"
     password = ""
     database = "webpy"
     return mysql.connector.connect(host=host, user=user, password=password, database=database)
-
 @app.route("/")
 def index():
     db = connect_database()
@@ -34,7 +33,6 @@ def index():
         link=link,
         statusupdate = statusupdate
     )
-
 @app.route("/submit", methods=["POST"])
 def submit():
     db = connect_database()
@@ -47,7 +45,6 @@ def submit():
     cursor.close()
     db.close()
     return redirect(url_for('index'))
-
 @app.route('/app/masa')
 def masa():
     waktu_msia = datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))
@@ -72,7 +69,6 @@ def masa():
         'tarikh': tarikh,
         'time': time
     })
-
 @app.route('/app/user')
 def get_users():
     try:
@@ -80,14 +76,12 @@ def get_users():
         cursor = db.cursor(dictionary=True, buffered=True)
         cursor.execute("SELECT * FROM pengguna")
         rows = cursor.fetchall()
-        
         for row in rows:
             # Tukar DATETIME/TIMESTAMP ke teks
             if row.get('created_at'):
                 row['created_at'] = row['created_at'].strftime("%Y-%m-%d %H:%M:%S")
             if row.get('updated_at'):
                 row['updated_at'] = row['updated_at'].strftime("%Y-%m-%d %H:%M:%S")
-            
             # Tukar masa_akhir — pastikan betul-betul jadi teks
             if row.get('masa_akhir') is not None:
                 val = row['masa_akhir']
@@ -100,27 +94,22 @@ def get_users():
                     row['masa_akhir'] = f"{jam:02d}:{minit:02d}:{saat:02d}"
                 else:
                     row['masa_akhir'] = str(val)
-        
         cursor.close()
         db.close()
         return jsonify({'users': rows})
-    
     except Exception as e:
         print(f"Ralat di /app/user: {repr(e)}")
         return jsonify({'error': str(e), 'users': []}), 500
-
 @app.route('/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
     conn = connect_database()
     cursor = conn.cursor(dictionary=True, buffered=True)
-    
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         trades = request.form['trades']
         status = request.form['status']
         transfer = request.form['transfer']
-
         cursor.execute(
             "UPDATE pengguna SET username=%s, password=%s, trades=%s, status=%s, statranfer=%s, runtrans=%s WHERE id=%s",
             (username, password, trades, status, transfer, transfer, user_id)
@@ -130,13 +119,11 @@ def edit_user(user_id):
         conn.close()
         # Pastikan guna nama yang BETUL
         return redirect(url_for("index"))  # ✅ atau url_for("index") jika dah tetapkan endpoint
-    
     cursor.execute("SELECT * FROM pengguna WHERE id=%s", (user_id,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
     return render_template('edit.html', user=user)
-
 @app.route('/add', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
@@ -145,19 +132,14 @@ def add_user():
         trade = '3'
         #time = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%H:%M:%S')
         date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
-
         conn = connect_database()
         cursor = conn.cursor()
-
         cursor.execute("INSERT INTO pengguna (username, password, trades, status, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '00:00:00', date))
         conn.commit()
         cursor.close()
         conn.close()
-
         return redirect(url_for('index'))
-
     return render_template('add_user.html')
-
 @app.route('/delete/<int:deleteid>', methods=['GET', 'POST'])
 def delete_list(deleteid):
     print(f"Id : {deleteid}")
@@ -168,7 +150,6 @@ def delete_list(deleteid):
     cursor.close()
     conn.close()
     return redirect(url_for('index'))
-
 @app.route('/update/')
 def update():
     conn = connect_database()
@@ -181,6 +162,35 @@ def update():
     cursor1.close()
     conn.close()
     return redirect(url_for('index'))
-
+@app.route('/app/runalltransfer/')
+def runalltransfer():
+    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\alltransfer.py"
+    arahan = [filepython, filerun]
+    try:
+        if not os.path.isfile(filepython):
+            return jsonify({
+                'success': False,
+                'message': 'Python executable tidak dijumpai.'
+            }), 500
+        if not os.path.isfile(filerun):
+            return jsonify({
+                'success': False,
+                'message': 'Fail run2.py tidak dijumpai.'
+            }), 500
+        subprocess.Popen(
+            arahan,
+            cwd=os.path.dirname(filerun),
+            start_new_session=True
+        )
+        return jsonify({
+            'success': True,
+            'message': 'Trade All berjaya dimulakan!'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Ralat semasa menjalankan skrip: {str(e)}'
+        }), 500
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

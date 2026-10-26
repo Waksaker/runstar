@@ -26,9 +26,24 @@ def updateruntrade(id_input):
     total = trade - 1
     cursor1.execute("UPDATE pengguna SET trades=%s, status=%s, masa_akhir=%s WHERE id=%s", (total, 1, time, id_input))
     conn.commit()
-    cursor.close()
-    cursor1.close()
-    conn.close()
+    #cursor.close()
+    #cursor1.close()
+    #conn.close()
+
+def updatepercentage(teks_pct, iduser):
+    conn = connect_database()
+    cursor = conn.cursor()
+    tarikh=datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
+    cursor.execute("SELECT * FROM log_percent WHERE date = %s", (tarikh,))
+    row = cursor.fetchone()
+    if row:
+        print("Update Percentage")
+        cursor.execute("UPDATE log_percent SET percent = %s WHERE date = %s", (teks_pct, tarikh))
+        conn.commit()
+    else:
+        print("Insert percentage")
+        cursor.execute("INSERT INTO log_percent (percent, date) VALUES (%s, %s)", (teks_pct, tarikh))
+        conn.commit()
 
 def main():
     db = None
@@ -80,7 +95,7 @@ def main():
 
         print("Tajuk laman:", driver.title)
         print("URL semasa:", driver.current_url)
-
+        time.sleep(6)
         # === BAHAGIAN KLIK BUTANG BAHASA ===
         try:
             # Tunggu butang sedia & cari berdasarkan atribut data-lang="en"
@@ -99,7 +114,7 @@ def main():
         except Exception as e:
             print(f"Gagal mengklik butang: {repr(e)}")
         # === TAMAT BAHAGIAN KLIK ===
-
+        time.sleep(6)
         # === 2. ISI NAMA PENGGUNA ===
         try:
             wait = WebDriverWait(driver, 15)
@@ -111,7 +126,6 @@ def main():
             print(f"Nama pengguna dimasukkan: {username_input}")
         except Exception as e:
             print(f"Gagal isi nama pengguna: {repr(e)}")
-
         # === 3. ISI KATA LALUAN ===
         try:
             password_field = wait.until(
@@ -122,7 +136,7 @@ def main():
             print("Kata laluan dimasukkan")
         except Exception as e:
             print(f"Gagal isi kata laluan: {repr(e)}")
-
+        time.sleep(6)
         # === 4. KLIK BUTANG SIGN IN ===
         try:
             signin_btn = wait.until(
@@ -134,16 +148,14 @@ def main():
             print("Berjaya menekan butang Sign In")
         except Exception as e:
             print(f"Gagal tekan butang Sign In: {repr(e)}")
-
-        time.sleep(3) 
-
+        time.sleep(6) 
         driver.get(url_checkin)
-        time.sleep(3)
+        time.sleep(6)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
         )
-        time.sleep(3)
+        time.sleep(6)
         #tekan butang checkin
         try:
             wait = WebDriverWait(driver, 10)
@@ -159,6 +171,7 @@ def main():
                 print(f"Butang sudah ditekan")
         except Exception as e:
             print(f"{e}")
+        time.sleep(6) 
         #tekan cliam reward
         try:
             wait = WebDriverWait(driver, 10)
@@ -174,13 +187,13 @@ def main():
             time.sleep(1)
         except Exception as e:
             print(f"Gagal tekan clain reward")
-        time.sleep(3)
+        time.sleep(6)
         driver.get(url_trade)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
         )
-        time.sleep(3)
+        time.sleep(6)
         try:
             wait_pct = WebDriverWait(driver, 10)
             element_pct = wait_pct.until(
@@ -189,10 +202,11 @@ def main():
                 )
             )
             teks_pct = element_pct.text.strip()
+            updatepercentage(teks_pct, id_input)
             print(f"Nilai peratus: {teks_pct}")
         except Exception as e:
             print(f"Nilai peratus: {repr(e)}")
-        time.sleep(2)
+        time.sleep(6)
         try:
             wait_trade = WebDriverWait(driver, 10)
             percubaan_maksimum = 5
@@ -222,6 +236,7 @@ def main():
                     time.sleep(0.5)
                     butang_buy.click()
                     print(f"Butang BTC ditekan")
+                    updateruntrade(id_input)
                     berjaya = True
                     break
                 except Exception as e:
@@ -232,7 +247,7 @@ def main():
                 print(f"Gagal selepas {percubaan_maksimum} kali percubaan.")
         except Exception as e:
             print(f"Gagal tekan max dan trade: {repr(e)}")
-        time.sleep(11)
+        time.sleep(13)
         # Tunggu & tekan butang tutup (X)
         try:
             wait_close = WebDriverWait(driver, 10)
@@ -246,14 +261,14 @@ def main():
             time.sleep(1)
         except Exception as e:
             print(f"[AMARAN] Gagal tekan butang tutup: {repr(e)}")
-        time.sleep(2)
+        time.sleep(6)
         driver.get(url_logout)
-        time.sleep(2)
+        time.sleep(6)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
         )
-        updateruntrade(id_input)
+        time.sleep(6)
         # Tekan butang Logout
         try:
             logout_btn = wait.until(
@@ -268,6 +283,7 @@ def main():
             time.sleep(1)
         except Exception as e:
             print(f"Gagal tekan butang Logout: {repr(e)}")
+        time.sleep(6)
         # === 10. TUNGGU & KLIK BUTANG OK ===
         try:
             # Tunggu mesej "Transfer Successful!" & butang OK
@@ -282,7 +298,7 @@ def main():
             time.sleep(1)
         except Exception as e:
             print(f"Gagal tekan butang OK: {repr(e)}")
-        time.sleep(2)
+        time.sleep(6)
         driver.quit()
     except Exception as e:
         print("Ralat:", repr(e))

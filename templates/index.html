@@ -90,7 +90,7 @@
         <a href="{{url_for('update')}}" class="btn btn-danger">Update</a>
 		<button onclick="" class="btn btn-primary">Autorun</button>
 		<button onclick="" class="btn btn-primary">Trade All</button>
-		<button onclick="" class="btn btn-primary">Transfer All</button>
+		<button onclick="alltransfer()" class="btn btn-primary">Transfer All</button>
 		<a href="" class="btn btn-primary">Percentage</a>
     </div>
 	<div class="container mt-4">
@@ -251,5 +251,22 @@
 		// Update setiap 1 saat
 		setInterval(updateMasa, 1000);
 	</script>
+    <script>
+        function alltransfer(){
+            if(confirm("Adakah anda mahu transfer semua akaun?")){
+	        fetch('/app/runalltransfer/',{
+                    method: 'GET'
+		})
+		.then(response => response.text())
+		.then(data => {
+                    console.log("Respons:", data);
+		    alert("Transfer all telah dijalankan")
+		})
+		.catch(error => {
+                    alert("Ralat:" + error);
+		});
+	    }
+	}
+    </script>
 </body>
 </html>
