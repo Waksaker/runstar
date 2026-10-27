@@ -1,2 +1,3 @@
 Intall package
 1) python -m pip install Flask tzdata requests mysql-connector-python selenium undetected-chromedrive
+2) Saya kacaknya

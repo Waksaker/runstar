@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import subprocess
 import os
+import sys
 app = Flask(__name__)
 def connect_database():
     host = "localhost"
@@ -192,5 +193,56 @@ def runalltransfer():
             'success': False,
             'message': f'Ralat semasa menjalankan skrip: {str(e)}'
         }), 500
+@app.route('/app/runalltrade/')
+def runalltrade():
+    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\alltrade.py"
+    arahan = [filepython, filerun]
+    try:
+        if not os.path.isfile(filepython):
+            return jsonify({
+                'success': False,
+                'message': 'Python executable tidak dijumpai.'
+            }), 500
+        if not os.path.isfile(filerun):
+            return jsonify({
+                'success': False,
+                'message': 'Fail run2.py tidak dijumpai.'
+            }), 500
+        subprocess.Popen(
+            arahan,
+            cwd=os.path.dirname(filerun),
+            start_new_session=True
+        )
+        return jsonify({
+            'success': True,
+            'message': 'Trade All berjaya dimulakan!'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Ralat semasa menjalankan skrip: {str(e)}'
+        }), 500
+@app.route('/percentage')
+def percentage():
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM log_percent")
+    rows = cursor.fetchall()
+    data = []
+    no = 1
+    for row in rows:
+        data.append({
+            "no": no,
+            "percent": row[1],
+            "date": row[2]
+        })
+        no += 1
+    cursor.close()
+    conn.close()     
+    return render_template(
+        "percent.html",
+        data=data
+    )
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
