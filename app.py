@@ -234,6 +234,7 @@ def percentage():
     for row in rows:
         data.append({
             "no": no,
+            "id": row[0],
             "percent": row[1],
             "date": row[2]
         })
@@ -244,5 +245,14 @@ def percentage():
         "percent.html",
         data=data
     )
+@app.route('/deletepct/<int:deleteid>', methods=['GET', 'POST'])
+def deletepct(deleteid):
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM log_percent WHERE id=%s", (deleteid,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('percentage'))   
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

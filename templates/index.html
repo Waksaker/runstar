@@ -253,14 +253,14 @@
 	</script>
     <script>
         function alltransfer(){
-            if(confirm("Adakah anda mahu transfer semua akaun?")){
+            if(confirm("Do you want to transfer all accounts?")){
 	        fetch('/app/runalltransfer/',{
                     method: 'GET'
 		})
 		.then(response => response.text())
 		.then(data => {
                     console.log("Respons:", data);
-		    alert("Transfer all telah dijalankan")
+		    //alert("Transfer all telah dijalankan")
 		})
 		.catch(error => {
                     alert("Ralat:" + error);
@@ -270,14 +270,14 @@
     </script>
     <script>
         function alltrade(){
-            if(confirm("Adakah anda mahu transfer semua akaun?")){
+            if(confirm("Do you want to trade all accounts?")){
 	        fetch('/app/runalltrade/',{
                     method: 'GET'
 		})
 		.then(response => response.text())
 		.then(data => {
                     console.log("Respons:", data);
-		    alert("Transfer all telah dijalankan")
+		   //alert("Trade all telah dijalankan")
 		})
 		.catch(error => {
                     alert("Ralat:" + error);

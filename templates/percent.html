@@ -28,6 +28,7 @@
                             <th style="text-align:center;">No</th>
                             <th style="text-align:center;">Percentage</th>
                             <th style="text-align:center;">Date</th>
+                            <th style="text-align:center:">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,6 +37,9 @@
                             <td style="text-align:center;">{{rekod.no}}</td>
                             <td style="text-align:center;">{{rekod.percent}}</td>
                             <td style="text-align:center;">{{rekod.date}}</td>
+                            <td style="text-align:center;">
+                                <a class="btn btn-sm btn-danger" href="/deletepct/{{rekod.id}}" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
