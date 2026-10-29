@@ -17,7 +17,7 @@ def connect_database():
 
 def updateruntrade(id_input):
     conn = connect_database()
-    time = (datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))+timedelta(hours=3)).strftime('%H:%M:%S')
+    time = (datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))+timedelta(hours=3, minutes=5)).strftime('%H:%M:%S')
     cursor = conn.cursor(dictionary=True)
     cursor1 = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM pengguna WHERE id=%s", (id_input,))
