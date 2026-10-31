@@ -138,6 +138,17 @@ def main():
         time.sleep(3)
 
         try:
+            butang_gotit = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.ID, "loginPopupPromoDismiss"))
+            )
+            butang_gotit.click()
+            print("[OK] Butang 'Got it' ditekan")
+        except Exception as e:
+            print(f"[AMARAN] Butang tak jumpa atau dah hilang: {repr(e)}")
+
+        time.sleep(3)
+
+        try:
             amount_element = wait.until(
                 EC.presence_of_element_located(
                     (By.CSS_SELECTOR, 'div#portfolioBalance.portfolio-amount')
