@@ -137,6 +137,7 @@ def main():
 
         time.sleep(3)
 
+        # Tekan butang got it
         try:
             butang_gotit = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "loginPopupPromoDismiss"))
