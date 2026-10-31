@@ -227,6 +227,7 @@ def runalltrade():
 def autorun():
     filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
     filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\autorun.py"
+    arahan = [filepython, filerun]
     try:
         if not os.path.isfile(filepython):
             return jsonify({
