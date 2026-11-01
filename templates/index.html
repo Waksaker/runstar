@@ -14,6 +14,22 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         h1 { color: #2c3e50; }
+        /* Tambah gaya untuk telefon */
+        @media (max-width: 576px) {
+            .col-5 {
+                flex: 0 0 46%;
+                max-width: 46%;
+            }
+            .card-body {
+                padding: 0.8rem;
+            }
+            .card-body h2 {
+                font-size: 1.4rem;
+            }
+            .small-font {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -44,37 +60,37 @@
 		</div>
 	</div>
 	<div class="container mt-4">
-		<div class="d-flex justify-content-center gap-2">
-			<div class="col-md-3">
-				<div class="card shadow-sm border-0">
-					<div class="card-body">
+		<div class="d-flex flex-wrap justify-content-center gap-3">
+			<div class="col-5 col-sm-3">
+				<div class="card shadow-sm border-0 h-100">
+					<div class="card-body" text-center>
 						<h6 class="text-muted">Total Account</h6>
 						<h2 class="fw-bold text-primary" id="totalaccount">0</h2>
 					</div>
 				</div>
 			</div>
 			
-			<div class="col-md-3">
-				<div class="card shadow-sm border-0">
-					<div class="card-body">
+			<div class="col-5 col-sm-3">
+				<div class="card shadow-sm border-0 h-100">
+					<div class="card-body text-center">
 						<h6 class="text-muted">Total Running</h6>
 						<h2 class="fw-bold text-primary" id="totalrunning">0</h2>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-md-3">
-				<div class="card shadow-sm border-0">
-					<div class="card-body">
+			<div class="col-5 col-sm-3">
+				<div class="card shadow-sm border-0 h-100">
+					<div class="card-body text-center">
 						<h6 class="text-muted">Date</h6>
 						<h2 class="fw-bold text-primary" id="date">-</h2>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-md-3">
-				<div class="card shadow-sm border-0">
-					<div class="card-body">
+			<div class="col-5 col-sm-3">
+				<div class="card shadow-sm border-0 h-100">
+					<div class="card-body text-center">
 						<h6 class="text-muted">Time</h6>
 						<h2 class="fw-bold text-primary" id="time">-</h2>
 					</div>
