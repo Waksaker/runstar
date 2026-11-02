@@ -19,7 +19,7 @@ def sound():
     playsound(r"C:\Users\faris\OneDrive\Desktop\runstar\coin.mp3")
 def updatestat(conn, iduser):
     cursor = conn.cursor()
-    cursor.execute("UPDATE pengguna SET status = %s, masa_akhir = %s WHERE id = %s", ('0', '00:00:00', iduser))
+    cursor.execute("UPDATE pengguna SET status = %s, masa_akhir = %s WHERE id = %s", ('0', '0000-00-00 00:00:00', iduser))
     conn.commit()
 def main():
     while True:
@@ -32,27 +32,19 @@ def main():
         rows=cursor.fetchall()
         if rows:
             for row in rows:
-                iduser=row[0]
-                masaakhir=row[7]
-                hari_ini=datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))
-                masakini_obj = hari_ini
-                h, m, s = map(int, masaakhir.split(':'))
-                masaakhir_obj = hari_ini.replace(hour=h, minute=m, second=s, microsecond=0)
-                if masaakhir_obj < masakini_obj:
-                    masaakhir_obj = masakini_obj
-                    print(f"Masa {masaakhir} sudah lepas hari ni -> terus proses")
-                else:
-                    print(f"Tunggu masa {masaakhir} hari ini")
-                    print(f"Id User: {iduser}, Masa Kini: {masakini_obj.strftime('%H:%M:%S')}, Masa Akhir: {masaakhir_obj.strftime('%H:%M:%S')}") 
-                if masakini_obj >= masaakhir_obj:
+                iduser = row[0]
+                masaakhir = row[8]
+                harini = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime("%Y-%m-%d %H:%M:%S")
+                print(f"Masa kini: {harini}, Masa Akhir: {masaakhir}") 
+                if harini >= masaakhir:
                     print(f"sama")
                     sound()
                     updatestat(conn, iduser)
                     print(f"Berjaya Update")
-                    time.sleep(2)
+                    time.sleep(1)
                 else:
                     print(f"Tidak sama")
-                    time.sleep(2)
+                    time.sleep(1)
         else:
             print(f"Tiada user")
             time.sleep(2)

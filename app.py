@@ -111,9 +111,10 @@ def edit_user(user_id):
         trades = request.form['trades']
         status = request.form['status']
         transfer = request.form['transfer']
+        statrade = request.form['statrade']
         cursor.execute(
-            "UPDATE pengguna SET username=%s, password=%s, trades=%s, status=%s, statranfer=%s, runtrans=%s WHERE id=%s",
-            (username, password, trades, status, transfer, transfer, user_id)
+            "UPDATE pengguna SET username=%s, password=%s, trades=%s, status=%s, statrade=%s, statranfer=%s, runtrans=%s WHERE id=%s",
+            (username, password, trades, status, statrade, transfer, transfer, user_id)
         )
         conn.commit()
         cursor.close()
@@ -135,7 +136,7 @@ def add_user():
         date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
         conn = connect_database()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '00:00:00', date))
+        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statrade, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '0', '00:00:00', date))
         conn.commit()
         cursor.close()
         conn.close()

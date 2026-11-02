@@ -78,6 +78,13 @@
                     <option value="1" {% if user.statranfer == 1 %}selected{% endif %}>Transfer</option>
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="statrade" class="from-label">Status Trade</label>
+                <select class="form-control" id="statrade" name="statrade" required>
+                    <option value="0" {% if user.statrade == 0 %}selected{% endif %}>No Trade</option>
+                    <option value="1" {% if user.statrade == 1 %}selected{% endif %}>Trade</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 

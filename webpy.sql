@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2026 at 10:15 AM
+-- Generation Time: Nov 02, 2026 at 06:32 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -73,6 +73,7 @@ CREATE TABLE `pengguna` (
   `password` varchar(255) NOT NULL,
   `trades` int NOT NULL,
   `status` int NOT NULL,
+  `statrade` int NOT NULL,
   `statranfer` int NOT NULL,
   `runtrans` int NOT NULL,
   `masa_akhir` text NOT NULL,
@@ -83,32 +84,32 @@ CREATE TABLE `pengguna` (
 -- Dumping data for table `pengguna`
 --
 
-INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `statranfer`, `runtrans`, `masa_akhir`, `date`) VALUES
-(2, 'farishdanial', 'waksaker1', 1, 0, 0, 0, '00:00:00', '2026-10-20'),
-(3, 'farishdanial01', 'waksaker1', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(4, 'farishdanial02', 'waksaker1', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(5, 'farishdanial03', 'waksaker1', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(6, 'farishdanial04', 'waksaker1', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(7, 'nisa08', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(8, 'nisa09', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(9, 'nisa10', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(10, 'nisa11', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(11, 'cantik08', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(12, 'cantik09', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(13, 'mantoba', 'waksaker1', 1, 0, 0, 0, '00:00:00', '2026-10-20'),
-(14, 'sharipah', 'waksaker1', 1, 0, 0, 0, '00:00:00', '2026-10-20'),
-(18, 'cantik02', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(19, 'cantik03', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(20, 'cantik04', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(21, 'cantik05', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(22, 'cantik06', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(23, 'cantik07', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(24, 'nisa04', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(25, 'nisa05', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(26, 'nisa06', 'Dsnisya86@', 1, 0, 1, 1, '00:00:00', '2026-10-20'),
-(27, 'nisa07', 'Dsnisya86@', 1, 1, 1, 1, '18:17:43', '2026-10-20'),
-(28, 'richarissa', 'Dsnisya86@', 1, 1, 0, 0, '18:21:11', '2026-10-20'),
-(29, 'richarissa1', 'Dsnisya86@', 1, 1, 1, 1, '18:31:12', '2026-10-20');
+INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `statrade`, `statranfer`, `runtrans`, `masa_akhir`, `date`) VALUES
+(2, 'farishdanial', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
+(3, 'farishdanial01', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(4, 'farishdanial02', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(5, 'farishdanial03', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(6, 'farishdanial04', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(7, 'nisa08', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(8, 'nisa09', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(9, 'nisa10', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(10, 'nisa11', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(11, 'cantik08', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(12, 'cantik09', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(13, 'mantoba', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
+(14, 'sharipah', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
+(18, 'cantik02', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(19, 'cantik03', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(20, 'cantik04', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(21, 'cantik05', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(22, 'cantik06', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(23, 'cantik07', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(24, 'nisa04', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(25, 'nisa05', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(26, 'nisa06', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(27, 'nisa07', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
+(28, 'richarissa', 'Dsnisya86@', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
+(29, 'richarissa1', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20');
 
 --
 -- Indexes for dumped tables
