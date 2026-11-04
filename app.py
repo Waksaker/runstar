@@ -136,7 +136,7 @@ def add_user():
         date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
         conn = connect_database()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statrade, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '0', '00:00:00', date))
+        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statrade, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '0', '0000-00-00 00:00:00', date))
         conn.commit()
         cursor.close()
         conn.close()

@@ -57,7 +57,7 @@ def main():
             if (masakini >= '08:10:00') or (masakini <= '05:59:59'):
                 print(f"Masuk waktu")
                 cursor = conn.cursor()
-                cursor.execute("SELECT * FROM pengguna WHERE trades != '0' AND status = '0' AND statrade = '1' AND masa_akhir = '00:00:00'")
+                cursor.execute("SELECT * FROM pengguna WHERE trades != '0' AND status = '0' AND statrade = '1' AND masa_akhir = '0000-00-00 00:00:00'")
                 row = cursor.fetchone()
                 if row:
                     iduser = row[0]
@@ -76,7 +76,7 @@ def main():
                         WHERE 
                             trades = '0' AND
                             status = '0' AND
-                            masa_akhir = '00:00:00' AND
+                            masa_akhir = '0000-00-00 00:00:00' AND
                             runtrans = '1'
                     """)
                     row1 = cursor1.fetchone()

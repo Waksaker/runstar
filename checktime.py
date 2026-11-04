@@ -28,7 +28,7 @@ def main():
             print(f"Database tidak fungsi")
             continue
         cursor=conn.cursor()
-        cursor.execute("SELECT * FROM pengguna WHERE status = 1 AND masa_akhir != '00:00:00'")
+        cursor.execute("SELECT * FROM pengguna WHERE status = 1 AND masa_akhir != '0000-00-00 00:00:00'")
         rows=cursor.fetchall()
         if rows:
             for row in rows:
