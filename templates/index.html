@@ -119,9 +119,7 @@
                             <th>Username & Password</th>
                             <th>Trade</th>
                             <th>Time End</th>
-                            <th>Status Running</th>
-                            <th>Status Trade</th>
-                            <th>Status Transfer</th>
+			    <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -158,45 +156,36 @@
                     },
                     { data: 'trades' },
                     { data: 'masa_akhir' },
-                    {
-                        data: 'status',
-                        render: function (data, type, row) {
-                            if (type !== 'display') return data;
-                            if (data == 1) {
-                                return '<span class="badge bg-danger">RUNNING</span>';
-                            }
-                            if (data == 0) {
-                                return '<span class="badge bg-success">FINISH</span>';
-                            }
-                            return '<span class="badge bg-secondary">UNKNOWN</span>';
-                        }
-                    },
-                    {
-                        data: 'statrade',
-                        render: function (data, type, row) {
-                            if (type !== 'display') return data;
-                            if (data == 1) {
-                                return '<span class="badge bg-danger">TRADE</span>';
-                            }
-                            if (data == 0) {
-                                return '<span class="badge bg-success">NO TRADE</span>';
-                            }
-                            return '<span class="badge bg-secondary">UNKNOWN</span>';
-                        }
-                    },
-					{
-						data: 'runtrans',
-						render: function (data, type, row) {
-							if (type !== 'display') return data;
-							if (data == 1) {
-								return '<span class="badge bg-danger">TRANSFER</span>';
-							}
-							if (data == 0) {
-								return '<span class="badge bg-success">NO TRANSFER</span>';
-							}
-							return '<span class="badge bg-secondary">UNKNOWN</span>';
-						}
-					},
+		    {
+		        data: null,
+			render: function(data, type, row){
+			    if (type !== 'display') return data;
+			    // Isytihar pemboleh ubah dahulu
+                            let starun, statrades, runstransfer;
+			    //Untuk status running 
+			    if (data.status === 1) {
+			        starun = '<span class="badge bg-danger">RUNNING</span>'; 
+			    } else if (data.status === 0) {
+			        starun = '<span class="badge bg-success">FINISH</span>';
+			    }
+			    // Untuk status trade
+			    if (data.statrade === 1) {
+			        statrades = '<span class="badge bg-danger">TRADE</span>';
+			    } else if (data.statrade === 0) {
+			        statrades = '<span class="badge bg-success">NO TRADE</span>';
+			    }
+			    // Untuk status transfer
+			    if (data.runtrans === 1) {
+			        runstransfer = '<span class="badge bg-danger">TRANSFER</span>';
+			    } else if (data.runtrans === 0) {
+			        runstransfer = '<span class="badge bg-success">NO TRANSFER</span>';
+			    }
+
+			    return "Status Running: " + starun + '<br>' + 
+			           "Status Trade: " + statrades + '<br>' + 
+				   "Status Transfer: " + runstransfer;   
+			}
+		    },
                     {
                         data: null,
                         orderable: false,
