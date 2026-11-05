@@ -56,17 +56,23 @@ def masa():
     cursor.execute("""
         SELECT
             COUNT(*) AS jumlah_pengguna,
-            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS jumlah_running
+            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS jumlah_running,
+            SUM(CASE WHEN statrade = 1 THEN 1 ELSE 0 END) AS jumlah_trade,
+            SUM(CASE WHEN runtrans = 1 THEN 1 ELSE 0 END) AS jumlah_transfer
         FROM pengguna
     """)
     rows = cursor.fetchall()
     jumlah_pengguna = rows[0]['jumlah_pengguna'] if rows else ""
     jumlah_running = rows[0]['jumlah_running'] if rows else ""
+    jumlah_trade = rows[0]['jumlah_trade'] if rows else ""
+    jumlah_transfer = rows[0]['jumlah_transfer'] if rows else ""
     cursor.close()
     db.close()
     return jsonify({
         'jumlah_pengguna': jumlah_pengguna,
         'jumlah_running': jumlah_running,
+        'jumlah_trade': jumlah_trade,
+        'jumlah_transfer': jumlah_transfer,
         'tarikh': tarikh,
         'time': time
     })

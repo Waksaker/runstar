@@ -17,34 +17,58 @@
     <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/datatables.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables.css') }}" />
-
     <style>
-        .table thead th {
-            background-color: #495057 !important;
-            color: white !important;
+        :root {
+            --bg-main: #0b1020;
+            --bg-accent: #1a2342;
+            --text-primary: #ffffff;
+            --border-color: #2a3558;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+        }
+
+        .navbar.bg-dark {
+            background-color: #080c17 !important;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h2, label {
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            background-color: var(--bg-accent);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .form-control:focus {
+            background-color: var(--bg-accent);
+            color: var(--text-primary);
+            border-color: #00c6ff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: #343a40;
+            border-color: #343a40;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background-color: #23272b;
+            border-color: #1d2124;
+            color: #fff;
         }
     </style>
 </head>
 
 <body>
-
-<nav class="navbar navbar-dark bg-dark">
-
-    <div class="container">
-
-        <span class="navbar-brand">
-            Sistem Starlika
-        </span>
-
-    </div>
-
-</nav>
-
-
 <div class="container mt-4">
 
     <h2>
-        Tambah Pengguna
+        Add Account
     </h2>
 
     <a href="{{ url_for('index') }}" class="btn btn-secondary">Kembali</a>
