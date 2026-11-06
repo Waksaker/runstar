@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
 import mysql.connector
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -6,6 +6,30 @@ import subprocess
 import os
 import sys
 app = Flask(__name__)
+# ===== Kata Laluan Keselamatan =====
+VALID_USERNAME = "familytukiman"
+VALID_PASSWORD = "familytukiman@5252"
+
+@app.before_request
+def periksa_kata_laluan():
+    if request.path.startswith("/static"):
+        return None
+    
+    auth = request.authorization
+    if not auth:
+        return Response(
+            "Sila masukkan Nama Pengguna & Kata Laluan",
+            401,
+            {"WWW-Authenticate": 'Basic realm="Akses Sahaja Keluarga Starlika"'}
+        )
+    
+    if auth.username != VALID_USERNAME or auth.password != VALID_PASSWORD:
+        return Response(
+            "Nama Pengguna atau Kata Laluan SALAH Akses Ditolak",
+            401,
+            {"WWW-Authenticate": 'Basic realm="Akses Sahaja Keluarga Starlika"'}
+        )
+# ===== Tamat Kata Laluan =====
 def connect_database():
     host = "localhost"
     user = "root"
