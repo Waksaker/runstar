@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 02, 2026 at 06:32 AM
+-- Generation Time: Nov 07, 2026 at 04:53 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -111,6 +111,21 @@ INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `statr
 (28, 'richarissa', 'Dsnisya86@', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
 (29, 'richarissa1', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profitlock`
+--
+
+CREATE TABLE `profitlock` (
+  `id` int NOT NULL,
+  `iduser` int NOT NULL,
+  `date` text NOT NULL,
+  `profit` text NOT NULL,
+  `lock` text NOT NULL,
+  `updated` timestamp NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -135,6 +150,12 @@ ALTER TABLE `pengguna`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `profitlock`
+--
+ALTER TABLE `profitlock`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -154,7 +175,13 @@ ALTER TABLE `log_percent`
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `profitlock`
+--
+ALTER TABLE `profitlock`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
