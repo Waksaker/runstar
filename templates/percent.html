@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Laman Web Python + HTML</title>
+    <title>Starlika Controler</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/sweetalert2.min.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='libs/jquery/dist/jquery.min.js') }}"></script>
@@ -25,7 +25,7 @@
             background-color: var(--bg-main);
             color: var(--text-primary);
             font-family: Arial, sans-serif;
-            text-align: center;
+	    text-align: center;
             margin-top: 50px;
         }
 
@@ -121,6 +121,9 @@
     </style>
 </head>
 <body>
+     <h2>
+        <u>List Percentage</u>
+    </h2>
     <div class="container mt-4">
         <a href="{{url_for('index')}}" class="btn btn-primary">List Account</a>
     </div>

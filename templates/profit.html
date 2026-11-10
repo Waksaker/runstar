@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Starlika Controler</title>
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/sweetalert2.min.css') }}" rel="stylesheet">
+        <script src="{{ url_for('static', filename='libs/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/sidebarmenu.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='datatables/datatables.js') }}"></script>
+	<script src="{{ url_for('static', filename='datatables/jquery-3.7.1.min')}}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='datatables/datatables.css') }}" />
+	<style>
+        :root {
+            --bg-main: #0b1020;
+            --bg-card: #141b30;
+            --bg-accent: #1a2342;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b8d4;
+            --border-color: #2a3558;
+            --blue-btn: #007bff;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .container {
+            color: var(--text-primary);
+        }
+
+        /* Butang utama */
+        .btn-primary {
+            background-color: var(--blue-btn);
+            border-color: var(--blue-btn);
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #ffffff;
+        }
+        /* Jadual */
+        .table-responsive {
+            background-color: var(--bg-card) !important;
+            border-radius: 12px !important;
+            border: 1px solid var(--border-color) !important;
+            padding: 1rem !important;
+            box-shadow: none !important;
+        }
+        .table {
+            color: var(--text-primary) !important;
+            background-color: transparent !important;
+        }
+        .table thead.table-dark {
+            background-color: var(--bg-accent) !important;
+            color: #ffffff !important;
+        }
+        .table-dark th {
+            border-color: var(--border-color) !important;
+            background-color: var(--bg-accent) !important;
+        }
+        /* Baris ganjil & genap - paksa terus pada tr */
+        .table-striped tbody tr {
+            background-color: #1e2744 !important;
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #252f52 !important;
+        }
+        /* Pastikan sel ikut warna latar ibu */
+        .table-striped tbody tr td {
+            background-color: transparent !important;
+            color: #ffffff !important;
+        }
+        /* Hover */
+        .table-striped tbody tr:hover {
+            background-color: #2c3863 !important;
+        }
+        /* Sel & sempadan */
+        .table-bordered th,
+        .table-bordered td {
+            border-color: #354270 !important;
+            color: #ffffff !important;
+            vertical-align: middle;
+        }
+        /* Butang Delete */
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        /* Kotak carian & paging DataTables */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            color: var(--text-secondary) !important;
+        }
+        .dataTables_wrapper select,
+        .dataTables_wrapper input {
+            background-color: var(--bg-accent) !important;
+            color: #fff !important;
+            border: 1px solid var(--border-color) !important;
+        }
+        .dataTables_wrapper .paginate_button {
+            background-color: var(--bg-accent) !important;
+            border: 1px solid var(--border-color) !important;
+            color: #fff !important;
+        }
+        .dataTables_wrapper .paginate_button.current {
+            background-color: var(--blue-btn) !important;
+            border-color: var(--blue-btn) !important;
+        }
+        </style>
+    </head>
+    <body>
+        <h2>
+            <u>List Profit And Lock</u>
+        </h2>
+        <div class="container mt-4">
+            <a href="{{url_for('index')}}" class="btn btn-primary">List Account</a>
+	</div>
+        <div class="container mt-4">
+	    <div class="col-md-12">
+                <div class="form-group row">
+                    <h1 class="col-sm-2 col-form-label">Please Choose</h1>
+		    <div class="col-sm-2">
+		        <input type="date" class="form-control" name="tarikh" id="tarikh" onchange="getClaim()">
+		    </div>
+		    <div id="spinner-border3" style="display: none;">Loading...</div>
+                    <div id="list"></div>
+                </div>
+            </div>
+        </div>
+	<script>
+	    function getClaim() {
+                // Ambil nilai terus dari elemen halaman
+		const val = $('#tarikh').val();
+                //console.log(val);
+                $('#spinner-border3').show();
+                $('#list').hide();
+                $.ajax({
+                    type: "POST",
+                    url: "/profitlocklist",  // Tukar laluan ke Flask
+                    data: {
+                        "tarikh": val
+                    },
+                    success: function(data) {
+                        $('#spinner-border3').hide();
+                        $("#list").html(data).fadeIn('fast').show();
+                    },
+                    error: function() {
+                        $('#spinner-border3').hide();
+                        $("#list").html("<p class='text-danger'>Ralat semasa mengambil data.</p>").show();
+                    }
+                });
+	    }
+	</script>
+    </body>
+</html>

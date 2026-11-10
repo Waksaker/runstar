@@ -44,7 +44,10 @@ def main():
                 FROM
                     pengguna
                 WHERE
-                    runtrans = 1
+                    trades = '0' AND
+                    status = '0' AND
+                    masa_akhir = '0000-00-00 00:00:00' AND
+                    runtrans = '1'
             """)
             row = cursor.fetchone()
             if row:

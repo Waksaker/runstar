@@ -53,7 +53,7 @@ def main():
                 WHERE
                     trades != '0' AND
                     status = '0' AND
-                    masa_akhir = '00:00:00' AND
+                    masa_akhir = '0000-00-00 00:00:00' AND
                     statrade = '1'
             """)
             row = cursor.fetchone()

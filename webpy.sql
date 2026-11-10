@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 07, 2026 at 04:53 PM
+-- Generation Time: Nov 08, 2026 at 01:40 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -73,6 +73,7 @@ CREATE TABLE `pengguna` (
   `password` varchar(255) NOT NULL,
   `trades` int NOT NULL,
   `status` int NOT NULL,
+  `staprofit` int NOT NULL,
   `statrade` int NOT NULL,
   `statranfer` int NOT NULL,
   `runtrans` int NOT NULL,
@@ -84,32 +85,32 @@ CREATE TABLE `pengguna` (
 -- Dumping data for table `pengguna`
 --
 
-INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `statrade`, `statranfer`, `runtrans`, `masa_akhir`, `date`) VALUES
-(2, 'farishdanial', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
-(3, 'farishdanial01', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(4, 'farishdanial02', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(5, 'farishdanial03', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(6, 'farishdanial04', 'waksaker1', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(7, 'nisa08', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(8, 'nisa09', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(9, 'nisa10', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(10, 'nisa11', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(11, 'cantik08', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(12, 'cantik09', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(13, 'mantoba', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
-(14, 'sharipah', 'waksaker1', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
-(18, 'cantik02', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(19, 'cantik03', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(20, 'cantik04', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(21, 'cantik05', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(22, 'cantik06', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(23, 'cantik07', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(24, 'nisa04', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(25, 'nisa05', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(26, 'nisa06', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(27, 'nisa07', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20'),
-(28, 'richarissa', 'Dsnisya86@', 3, 0, 1, 0, 0, '00:00:00', '2026-10-20'),
-(29, 'richarissa1', 'Dsnisya86@', 3, 0, 1, 1, 1, '00:00:00', '2026-10-20');
+INSERT INTO `pengguna` (`id`, `username`, `password`, `trades`, `status`, `staprofit`, `statrade`, `statranfer`, `runtrans`, `masa_akhir`, `date`) VALUES
+(2, 'farishdanial', 'waksaker1', 0, 0, 1, 1, 0, 0, '00:00:00', '2026-10-20'),
+(3, 'farishdanial01', 'waksaker1', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(4, 'farishdanial02', 'waksaker1', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(5, 'farishdanial03', 'waksaker1', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(6, 'farishdanial04', 'waksaker1', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(7, 'nisa08', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(8, 'nisa09', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(9, 'nisa10', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(10, 'nisa11', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(11, 'cantik08', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(12, 'cantik09', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(13, 'mantoba', 'waksaker1', 0, 0, 1, 1, 0, 0, '00:00:00', '2026-10-20'),
+(14, 'sharipah', 'waksaker1', 0, 0, 1, 1, 0, 0, '00:00:00', '2026-10-20'),
+(18, 'cantik02', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(19, 'cantik03', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(20, 'cantik04', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(21, 'cantik05', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(22, 'cantik06', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(23, 'cantik07', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(24, 'nisa04', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(25, 'nisa05', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(26, 'nisa06', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(27, 'nisa07', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20'),
+(28, 'richarissa', 'Dsnisya86@', 0, 0, 1, 1, 0, 0, '00:00:00', '2026-10-20'),
+(29, 'richarissa1', 'Dsnisya86@', 0, 0, 1, 1, 1, 1, '00:00:00', '2026-10-20');
 
 -- --------------------------------------------------------
 
@@ -125,6 +126,13 @@ CREATE TABLE `profitlock` (
   `lock` text NOT NULL,
   `updated` timestamp NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `profitlock`
+--
+
+INSERT INTO `profitlock` (`id`, `iduser`, `date`, `profit`, `lock`, `updated`) VALUES
+(1, 2, '2026-11-08', '60.02', '0.002', '2026-11-08 12:54:35');
 
 --
 -- Indexes for dumped tables
@@ -181,7 +189,7 @@ ALTER TABLE `pengguna`
 -- AUTO_INCREMENT for table `profitlock`
 --
 ALTER TABLE `profitlock`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -263,15 +263,17 @@
 		</div>
 	</div>
     <div class="container mt-4">
-        <a href="{{ url_for('add_user')}}" class="btn btn-primary">Add Account</a> ||
+         <a href="{{url_for('update')}}" class="btn btn-danger">Update</a> ||
+        <a href="{{ url_for('add_user')}}" class="btn btn-primary">Add Account</a> 
+        <a href="{{url_for('percentage')}}" class="btn btn-primary">Percentage</a> 
+	<a href="{{url_for('profitlock')}}" class="btn btn-primary">Profit & Lock</a> ||
 	<!-- {% if statusupdate == 'update' %}
 	    <a href="{{url_for('update')}}" class="btn btn-danger">Update</a>
 	{% endif %} --!>
-        <a href="{{url_for('update')}}" class="btn btn-danger">Update</a> ||
 		<button onclick="autorun()" class="btn btn-primary">Autorun</button>
 		<button onclick="alltrade()" class="btn btn-primary">Trade All</button>
-		<button onclick="alltransfer()" class="btn btn-primary">Transfer All</button> ||
-		<a href="{{url_for('percentage')}}" class="btn btn-primary">Percentage</a>
+		<button onclick="profitlock()" class="btn btn-primary">Profitlock</button>
+		<button onclick="alltransfer()" class="btn btn-primary">Transfer All</button>
     </div>
     <div class="container mt-4">
         <div class="desktop-table mt-4">
@@ -337,18 +339,24 @@
 			    if (data.statrade === 1) {
 			        statrades = '<span class="badge bg-danger">TRADE</span>';
 			    } else if (data.statrade === 0) {
-			        statrades = '<span class="badge bg-success">NO TRADE</span>';
+			        statrades = '<span class="badge bg-success">NOT TRADE</span>';
 			    }
 			    // Untuk status transfer
 			    if (data.runtrans === 1) {
 			        runstransfer = '<span class="badge bg-danger">TRANSFER</span>';
 			    } else if (data.runtrans === 0) {
-			        runstransfer = '<span class="badge bg-success">NO TRANSFER</span>';
+			        runstransfer = '<span class="badge bg-success">DONE TRANSFER</span>';
 			    }
-
+                            // Untuk status profit
+			    if (data.staprofit === 1){
+			        staprofit = '<span class="badge bg-danger">PROFIT</span>';
+			    } else if(data.staprofit === 0){
+			        staprofit = '<span class="badge bg-success">DONE PROFIT</span>';
+			    }
 			    return "Running: " + '<br>' + starun + '<br>' + 
 			           "Trade: " + '<br>' + statrades + '<br>' + 
-				   "Transfer: " + '<br>' + runstransfer;   
+			           "Transfer: " + '<br>' + runstransfer + '<br>' +
+			           "Profit & Lock: " + '<br>' + staprofit;   
 			}
 		    },
                     {
@@ -489,6 +497,23 @@
                     alert("Ralat:" + error);
                 });
             }
+        }
+    </script>
+    <script>
+        function profitlock(){
+            if(confirm("Do you want to profitlock all accounts?")){
+	        fetch('/app/runallprofit/',{
+                    method: 'GET'
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log("Respons:", data);
+                    //alert("Trade all telah dijalankan")
+                })
+                .catch(error => {
+                    alert("Ralat:" + error);
+                }); 
+	    }
         }
     </script>
 </body>

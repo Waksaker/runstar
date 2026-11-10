@@ -166,7 +166,7 @@ def add_user():
         date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d')
         conn = connect_database()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO pengguna (username, password, trades, status, statrade, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '0', '0', '0000-00-00 00:00:00', date))
+        cursor.execute("INSERT INTO pengguna (username, password, trades, status, staprofit, statrade, statranfer, runtrans, masa_akhir, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (username, password, trade, '0', '0', '1', '0', '0', '0000-00-00 00:00:00', date))
         conn.commit()
         cursor.close()
         conn.close()
@@ -188,7 +188,7 @@ def update():
     cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute("UPDATE pengguna SET runtrans=%s WHERE statranfer=%s", (1, 1))
     cursor1 = conn.cursor(dictionary=True)
-    cursor1.execute("UPDATE pengguna SET trades=%s", (3,))
+    cursor1.execute("UPDATE pengguna SET trades=%s, staprofit=%s", (3,1))
     conn.commit()
     cursor.close()
     cursor1.close()
@@ -284,6 +284,36 @@ def autorun():
             'success': False,
             'message': f'Ralat semasa menjalankan skrip: {str(e)}'
         }), 500
+@app.route('/app/runallprofit/')
+def runallprofit():
+    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\allprofit.py"
+    arahan = [filepython, filerun]
+    try:
+        if not os.path.isfile(filepython):
+            return jsonify({
+                'success': False,
+                'message': 'Python executable tidak dijumpai.'
+            }), 500
+        if not os.path.isfile(filerun):
+            return jsonify({
+                'success': False,
+                'message': 'Fail run2.py tidak dijumpai.'
+            }), 500
+        subprocess.Popen(
+            arahan,
+            cwd=os.path.dirname(filerun),
+            start_new_session=True
+        )
+        return jsonify({
+            'success': True,
+            'message': 'Trade All berjaya dimulakan!'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'Ralat semasa menjalankan skrip: {str(e)}'
+        }), 500
 @app.route('/percentage')
 def percentage():
     conn = connect_database()
@@ -304,6 +334,62 @@ def percentage():
     conn.close()     
     return render_template(
         "percent.html",
+        data=data
+    )
+@app.route('/profitlock')
+def profitlock():
+    tahunmin= int(datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y'))
+    tahunmax = 2024
+    # Senarai tahun untuk dihantar ke templat
+    senarai_tahun = []
+    semasa = tahunmin
+    while semasa >= tahunmax:
+        senarai_tahun.append(semasa)
+        semasa -= 1
+    return render_template(
+        "profit.html",
+        senarai_tahun=senarai_tahun
+    )
+@app.route('/profitlocklist', methods=['POST'])
+def profitlocklist():
+    # Terima data dari borang
+    tarikh = request.form.get('tarikh', '')
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT 
+            a.*,
+            b.username,
+            b.password
+        FROM 
+            profitlock AS a
+        LEFT JOIN
+            pengguna AS b
+        ON
+            a.iduser = b.id
+        WHERE
+            a.date = %s
+    """, (tarikh,))
+    rows = cursor.fetchall()
+    data = []
+    no = 1
+    for row in rows:
+        data.append({
+            "no": no,
+            "id": row[0],
+            "iduser": row[1],
+            "date": row[2],
+            "profit": row[3],
+            "lock": row[4],
+            "updated": row[5],
+            "username": row[6],
+            "password": row[7]
+        })
+        no += 1
+    cursor.close()
+    conn.close()     
+    return render_template(
+        "profitlist.html",
         data=data
     )
 @app.route('/deletepct/<int:deleteid>', methods=['GET', 'POST'])

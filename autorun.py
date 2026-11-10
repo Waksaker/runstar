@@ -33,6 +33,21 @@ def runtransfer(username, password, iduser):
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
+def runallprofit():
+    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\allprofit.py"
+    try:
+        result = subprocess.run(
+            [filepython, filerun],
+            capture_output=True,  # Tangkap output supaya tidak bersepah di terminal
+            text=True,            # Tukar output dari bytes kepada string biasa
+            check=True            # Baling error jika skrip gagal
+        )
+        print(f"[SUKSES] Skrip untuk id {iduser} berjaya dijalankan.")
+        print("Output:", result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
+        print("Detail Error:", e.stderr)
 def connect_database():
     try:
         conn = mysql.connector.connect(
@@ -90,8 +105,11 @@ def main():
                     else:
                         print("Semua sudah selesai")
                         time.sleep(2)
+                        runallprofit()
+                        print("Profit sedang berjalan")
+                        break
             else:
                 print(f"Luar waktu")
-                break
+                time.sleep(2)
 if __name__=="__main__":
     main()

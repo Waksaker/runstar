@@ -5,12 +5,39 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 def connect_database():
     host = "localhost"
     user = "root"
     password = ""
     database = "webpy"
     return mysql.connector.connect(host=host, user=user, password=password, database=database)
+def profitlock(iduser, nilai_balance, nilai_trading):
+    date = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime("%Y-%m-%d")
+    datetime_full = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime("%Y-%m-%d %H:%M:%S")
+    print(f"ID user: {iduser}, Nilai profit: {nilai_balance}, Nilai Trade Lock: {nilai_trading}, Tarikh: {date}")
+    db = connect_database()
+    cursor = db.cursor()
+    cursor1 = db.cursor()
+    cursor.execute("SELECT * FROM profitlock WHERE date = %s AND iduser = %s", (date, iduser)) 
+    row = cursor.fetchone()
+    if row:
+        print(f"ADA")
+        idu = row[1]
+        tarikh = row[2]
+        print(f"ID: {idu}, Tarikh: {tarikh}")
+        cursor1.execute("UPDATE profitlock SET `profit` = %s, `lock` = %s, `updated` = %s WHERE `iduser` = %s AND `date` = %s", (nilai_balance, nilai_trading, datetime_full, idu, tarikh))
+        db.commit
+    else:
+        print(f"TIADA")
+        cursor1.execute("INSERT INTO profitlock (`iduser`, `date`, `profit`, `lock`, `updated`) VALUES (%s, %s, %s, %s, %s)", (iduser, date, nilai_balance, nilai_trading, datetime_full))
+        db.commit()
+def updateprofit(iduser):
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE pengguna SET `staprofit` = '0' WHERE `id` = %s", (iduser,))
+    conn.commit()
 def main():
     db = None
     cursor = None
@@ -121,8 +148,8 @@ def main():
             # Tukar ke nombor
             nilai_balance = float(balance_str.replace("$", "").replace(",", "."))
             nilai_trading = float(trading_text.replace("$", "").replace(",", "."))
-
-            print(f"Nilai profit: {nilai_balance}, Nilai Trade Lock: {nilai_trading}")
+            profitlock(id_input , nilai_balance, nilai_trading)
+            updateprofit(id_input)
         except Exception as e:
             print(f"Gagal: {e}")
         time.sleep(5)
@@ -162,8 +189,8 @@ def main():
         except Exception as e:
             print(f"Gagal tekan butang OK: {repr(e)}")
         time.sleep(2)
-        #driver.quit()
-        input("Tekan ENTER untuk menutup Chrome...")
+        driver.quit()
+        #input("Tekan ENTER untuk menutup Chrome...")
     except Exception as e:
         print("Ralat:", repr(e))
     finally:
