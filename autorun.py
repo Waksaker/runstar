@@ -45,9 +45,11 @@ def runallprofit():
         )
         print(f"[SUKSES] Skrip untuk id {iduser} berjaya dijalankan.")
         print("Output:", result.stdout)
+        return True
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
+        return False
 def connect_database():
     try:
         conn = mysql.connector.connect(
@@ -103,11 +105,38 @@ def main():
                         runtransfer(username, password, iduser)
                         time.sleep(60)
                     else:
-                        print("Semua sudah selesai")
-                        time.sleep(2)
-                        runallprofit()
-                        print("Profit sedang berjalan")
-                        break
+                        cursor2 = conn.cursor()
+                        cursor2.execute("""
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                pengguna
+                            WHERE
+                                trades = '0' AND
+                                status = '0' AND
+                                runtrans = '0' AND
+                                masa_akhir = '0000-00-00 00:00:00'
+                        """)
+                        row2 = cursor2.fetchone()
+                        cursor3 = conn.cursor()
+                        cursor3.execute("""
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                pengguna
+                        """)
+                        row3 = cursor3.fetchone()
+                        count2 = row2[0] if row2 else 0
+                        count3 = row3[0] if row3 else 0
+                        if count2 == count3:
+                            print(f"sama")
+                            print("Semua sudah selesai")
+                            time.sleep(2)
+                            runallprofit()
+                            break
+                        else:
+                            print(f"Masih Ada Running = {count2} | {count3}")
+                            time.sleep(2)
             else:
                 print(f"Luar waktu")
                 time.sleep(2)
