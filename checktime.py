@@ -33,7 +33,7 @@ def main():
         if rows:
             for row in rows:
                 iduser = row[0]
-                masaakhir = row[8]
+                masaakhir = row[9]
                 harini = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime("%Y-%m-%d %H:%M:%S")
                 print(f"Masa kini: {harini}, Masa Akhir: {masaakhir}") 
                 if harini >= masaakhir:
