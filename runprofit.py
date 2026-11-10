@@ -64,7 +64,7 @@ def main():
         options.add_argument("--start-maximized")
         driver = uc.Chrome(
             options=options,
-            version_main=155,
+            version_main=157,
             suppress_welcome=True,
             headless=False
         )
@@ -136,19 +136,26 @@ def main():
             print("[OK] Butang 'Got it' ditekan")
         except Exception as e:
             print(f"[AMARAN] Butang tak jumpa atau dah hilang: {repr(e)}")
-        time.sleep(5)
+        time.sleep(5)        
         # Ambik amount profit
         try:
             elem = wait.until(EC.visibility_of_element_located((By.ID, "portfolioBalance")))
-            trading_elem = wait.until(
-                EC.visibility_of_element_located((By.ID, "tradingAmount"))
-            )
+            trading_elem = wait.until(EC.visibility_of_element_located((By.ID, "tradingAmount")))
             balance_str = elem.text
             trading_text = trading_elem.text
-            # Tukar ke nombor
-            nilai_balance = float(balance_str.replace("$", "").replace(",", "."))
-            nilai_trading = float(trading_text.replace("$", "").replace(",", "."))
-            profitlock(id_input , nilai_balance, nilai_trading)
+            # Fungsi bersihkan nombor
+            def tukar_ke_nombor(teks):
+                bersih = teks.replace("$", "")
+                # Tukar koma ke titik
+                bersih = bersih.replace(",", ".")
+                # Jika ada lebih dari satu titik, buang semua kecuali yang terakhir
+                if bersih.count('.') > 1:
+                    bahagian = bersih.rsplit('.', 1)
+                    bersih = bahagian[0].replace('.', '') + '.' + bahagian[1]
+                return float(bersih)
+            nilai_balance = tukar_ke_nombor(balance_str)
+            nilai_trading = tukar_ke_nombor(trading_text)
+            profitlock(id_input, nilai_balance, nilai_trading)
             updateprofit(id_input)
         except Exception as e:
             print(f"Gagal: {e}")
