@@ -358,17 +358,17 @@ def profitlocklist():
     cursor = conn.cursor()
     cursor.execute("""
         SELECT 
-            a.*,
-            b.username,
-            b.password
+            b.*,
+            a.username,
+            a.password
         FROM 
-            profitlock AS a
+            `pengguna` AS a
         LEFT JOIN
-            pengguna AS b
+            `profitlock` AS b
         ON
-            a.iduser = b.id
+            a.id = b.iduser
         WHERE
-            a.date = %s
+            b.date = %s
     """, (tarikh,))
     rows = cursor.fetchall()
     data = []
@@ -386,11 +386,28 @@ def profitlocklist():
             "password": row[7]
         })
         no += 1
+    cursor1 = conn.cursor()
+    cursor1.execute("""
+        SELECT 
+            SUM(`profit`) AS total_profit,
+            SUM(`lock`) AS total_lock
+        FROM 
+            `profitlock`
+        WHERE
+            `date` = %s;
+    """, (tarikh,))
+    row1 = cursor1.fetchone()
+    total_profit = round(float(row1[0]), 2) if row1[0] else "0.00"
+    total_lock = round(float(row1[1]), 2) if row1[1] else "0.00"
     cursor.close()
+    cursor1.close()
     conn.close()     
     return render_template(
         "profitlist.html",
-        data=data
+        data=data,
+        total_profit=total_profit,
+        total_lock=total_lock,
+        tarikh=tarikh
     )
 @app.route('/deletepct/<int:deleteid>', methods=['GET', 'POST'])
 def deletepct(deleteid):
@@ -400,6 +417,64 @@ def deletepct(deleteid):
     conn.commit()
     cursor.close()
     conn.close()
-    return redirect(url_for('percentage'))   
+    return redirect(url_for('percentage'))
+@app.route('/printprofit', methods=['GET', 'POST'])
+def printprofit():
+    if request.method == 'POST':
+        dateprofit = request.form.get('dateprofit')
+        conn = connect_database()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT 
+                b.*,
+                a.username,
+                a.password
+            FROM 
+                `pengguna` AS a
+            LEFT JOIN
+                `profitlock` AS b
+            ON
+                a.id = b.iduser
+            WHERE
+                b.date = %s
+        """, (dateprofit,))
+        rows = cursor.fetchall()
+        data = []
+        no = 1
+        for row in rows:
+            data.append({
+                "no": no,
+                "id": row[0],
+                "iduser": row[1],
+                "date": row[2],
+                "profit": row[3],
+                "lock": row[4],
+                "updated": row[5],
+                "username": row[6],
+                "password": row[7]
+            })
+            no += 1
+        cursor1 = conn.cursor()
+        cursor1.execute("""
+            SELECT 
+                SUM(`profit`) AS total_profit,
+                SUM(`lock`) AS total_lock
+            FROM 
+                `profitlock`
+            WHERE
+                `date` = %s;
+        """, (dateprofit,))
+        row1 = cursor1.fetchone()
+        total_profit = round(float(row1[0]), 2) if row1[0] else "0.00"
+        total_lock = round(float(row1[1]), 2) if row1[1] else "0.00"
+        cursor.close()
+        cursor1.close()
+        conn.close() 
+    return render_template(
+        "printprofit.html",
+        data=data,
+        total_profit=total_profit,
+        total_lock=total_lock,
+    )
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

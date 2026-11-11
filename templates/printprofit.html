@@ -1,0 +1,114 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
+    <title>Print Profit & Lock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 20px;
+        }
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .page-header h3 {
+            font-size: 24px;
+            text-decoration: underline;
+            margin: 0 0 15px 0;
+        }
+        .totals {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .totals h4 {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #333;
+            padding: 8px 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        table th {
+            background-color: #212529;
+            color: #fff;
+            font-weight: bold;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        /* Sembunyikan butang tutup semasa cetak */
+        @media print {
+            .btn-close-page { display: none; }
+        }
+        .btn-close-page {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <h3>List Profit And Lock</h3>
+    </div>
+
+    <div class="totals">
+        <h4>Total Profit: ${{ total_profit }}</h4>
+        <h4>Total Lock: ${{ total_lock }}</h4>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%;">No</th>
+                <th style="width: 32%;">Username</th>
+                <th style="width: 30%;">Profit / Lock</th>
+                <th style="width: 30%;">Date & Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rekod in data %}
+            <tr>
+                <td>{{ rekod.no }}</td>
+                <td>{{ rekod.username }}</td>
+                <td>
+                    Profit: ${{ rekod.profit }}<br>
+                    Lock: ${{ rekod.lock }}
+                </td>
+                <td>{{ rekod.updated }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="btn-close-page">
+        <button onclick="window.close()" class="btn btn-secondary">Tutup Halaman</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+            }, 300);
+        };
+    </script>
+
+</body>
+</html>
