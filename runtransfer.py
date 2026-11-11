@@ -150,11 +150,7 @@ def main():
         time.sleep(3)
 
         try:
-            amount_element = wait.until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, 'div#portfolioBalance.portfolio-amount')
-                )
-            )
+            amount_element = wait.until(EC.visibility_of_element_located((By.ID, "profitAmount")))
             amount_text = amount_element.text.strip()
             print("=" * 40)
             print(f"Jumlah Available Profit & Commission: {amount_text} USD")

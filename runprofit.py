@@ -139,7 +139,7 @@ def main():
         time.sleep(5)        
         # Ambik amount profit
         try:
-            elem = wait.until(EC.visibility_of_element_located((By.ID, "portfolioBalance")))
+            elem = wait.until(EC.visibility_of_element_located((By.ID, "profitAmount")))
             trading_elem = wait.until(EC.visibility_of_element_located((By.ID, "tradingAmount")))
             balance_str = elem.text
             trading_text = trading_elem.text
