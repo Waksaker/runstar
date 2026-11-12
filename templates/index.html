@@ -260,6 +260,15 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="col-5 col-sm-3">
+				<div class="card shadow-sm border-0 h-100">
+					<div class="card-body text-center">
+						<h6 class="text-muted">Function Running</h6>
+						<h2 class="fw-bold text-primary" id="runfunction">0</h2>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
     <div class="container mt-4">
@@ -412,6 +421,7 @@
 		    document.getElementById('totaltransfer').textContent = data.jumlah_transfer || 0;
                     document.getElementById('date').textContent = data.tarikh || '-';
                     document.getElementById('time').textContent = data.time || '-';
+		    document.getElementById('runfunction').textContent = data.func;
                 })
                 .catch(err => console.error('Ralat:', err));
         }

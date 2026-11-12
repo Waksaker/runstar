@@ -34,6 +34,21 @@ def runtrade(username, password, iduser):
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
+def updatefunc(func):
+    try:
+        conn = connect_database()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE
+                `func`
+            SET
+                `func` = %s
+            WHERE 
+                `id` = %s
+        """, (func, 1))
+        conn.commit()
+    except Exception as e:
+        print(f"Ralat semasa mengemaskini function: {repr(e)}")
 def main():
     while True:
         conn=connect_database()
@@ -42,7 +57,8 @@ def main():
             time.sleep(1)
             continue
         else:
-          #  print(f"Sambungan database berjaya")
+            #print(f"Sambungan database berjaya")
+            updatefunc(2)
             time.sleep(1)
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
@@ -66,6 +82,7 @@ def main():
                 continue
             else:
                 print(f"Tiada user")
+                updatefunc(0)
                 time.sleep(2)
                 cursor.close()
                 conn.close()

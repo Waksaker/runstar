@@ -33,7 +33,22 @@ def run(iduser, username, password):
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
-        return    
+        return
+def updatefunc(func):
+    try:
+        conn = connect_database()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE
+                `func`
+            SET
+                `func` = %s
+            WHERE 
+                `id` = %s
+        """, (func, 1))
+        conn.commit()
+    except Exception as e:
+        print(f"Ralat semasa mengemaskini function: {repr(e)}")
 def main():
     while True:
         conn = connect_database()
@@ -42,6 +57,7 @@ def main():
             time.sleep(1)
             continue
         else:
+            updatefunc(4)
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT 
@@ -65,6 +81,7 @@ def main():
                 time.sleep(60)
             else:
                 print(f"TIADA USER")
+                updatefunc(0)
                 time.sleep(2)
                 break
 if __name__ == "__main__":

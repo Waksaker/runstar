@@ -90,6 +90,24 @@ def masa():
     jumlah_running = rows[0]['jumlah_running'] if rows else ""
     jumlah_trade = rows[0]['jumlah_trade'] if rows else ""
     jumlah_transfer = rows[0]['jumlah_transfer'] if rows else ""
+    cursor1 = db.cursor(dictionary=True, buffered=True)
+    cursor1.execute("""
+        SELECT
+            *
+        FROM
+            `func`
+    """)
+    rows1 = cursor1.fetchone()
+    if rows1['func'] == 1:
+        function = "Autorun"
+    elif rows1['func'] == 2:
+        function = "Trade All"
+    elif rows1['func'] == 3:
+        function = "Transfer All"
+    elif rows1['func'] == 4:
+        function = "Profitlock All"
+    else:
+        function = "None"
     cursor.close()
     db.close()
     return jsonify({
@@ -98,7 +116,8 @@ def masa():
         'jumlah_trade': jumlah_trade,
         'jumlah_transfer': jumlah_transfer,
         'tarikh': tarikh,
-        'time': time
+        'time': time,
+        'func': function
     })
 @app.route('/app/user')
 def get_users():

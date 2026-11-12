@@ -29,6 +29,21 @@ def run(username, password, iduser):
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
         return
+def updatefunc(func):
+    try:
+        conn = connect_database()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE
+                `func`
+            SET
+                `func` = %s
+            WHERE 
+                `id` = %s
+        """, (func, 1))
+        conn.commit()
+    except Exception as e:
+        print(f"Ralat semasa mengemaskini function: {repr(e)}")
 def main():
     while True:
         conn = connect_database()
@@ -37,6 +52,7 @@ def main():
             time.sleep(5)
             continue
         try:
+            updatefunc(3)
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
                 SELECT 
@@ -59,6 +75,7 @@ def main():
                 continue
             else:
                 print("Tiada pengguna dengan runtrans =1")
+                updatefunc(0)
                 cursor.close()
                 conn.close()
                 break

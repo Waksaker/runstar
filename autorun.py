@@ -33,23 +33,36 @@ def runtransfer(username, password, iduser):
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
-def runallprofit():
+def runprofit(username, password, iduser):
     filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
-    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\allprofit.py"
+    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\runprofit.py"
     try:
         result = subprocess.run(
-            [filepython, filerun],
+            [filepython, filerun, str(username), str(password), str(iduser)],
             capture_output=True,  # Tangkap output supaya tidak bersepah di terminal
             text=True,            # Tukar output dari bytes kepada string biasa
             check=True            # Baling error jika skrip gagal
         )
         print(f"[SUKSES] Skrip untuk id {iduser} berjaya dijalankan.")
         print("Output:", result.stdout)
-        return True
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Skrip run untuk id {iduser} gagal.")
         print("Detail Error:", e.stderr)
-        return False
+def updatefunc(func):
+    try:
+        conn = connect_database()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE
+                `func`
+            SET
+                `func` = %s
+            WHERE 
+                `id` = %s
+        """, (func, 1))
+        conn.commit()
+    except Exception as e:
+        print(f"Ralat semasa mengemaskini function: {repr(e)}")
 def connect_database():
     try:
         conn = mysql.connector.connect(
@@ -71,6 +84,7 @@ def main():
         else:
             masakini = datetime.now(ZoneInfo("Asia/Kuala_Lumpur")).strftime('%H:%M:%S')
             print(f"Time: {masakini}")
+            updatefunc(1)
             if (masakini >= '08:10:00') or (masakini <= '05:59:59'):
                 print(f"Masuk waktu")
                 cursor = conn.cursor()
@@ -130,10 +144,32 @@ def main():
                         count3 = row3[0] if row3 else 0
                         if count2 == count3:
                             print(f"sama")
-                            print("Semua sudah selesai")
                             time.sleep(2)
-                            runallprofit()
-                            break
+                            cursor4 = conn.cursor()
+                            cursor4.execute("""
+                                SELECT
+                                    *
+                                FROM
+                                    pengguna
+                                WHERE
+                                    trades = '0' AND
+                                    status = '0' AND
+                                    runtrans = '0' AND
+                                    masa_akhir = '0000-00-00 00:00:00' AND
+                                    staprofit = '1'
+                            """)
+                            row2 = cursor4.fetchone()
+                            if row2:
+                                iduser = row2[0]
+                                username = row2[1]
+                                password = row2[2]
+                                print(f"Status: Run Profit, ID: {iduser}, Username: {username}, Password: {password}")
+                                runprofit(username, password, iduser)
+                                time.sleep(60)
+                            else:
+                                print("Semua sudah selesai")
+                                updatefunc(0)
+                                break
                         else:
                             print(f"Masih Ada Running = {count2} | {count3}")
                             time.sleep(2)
