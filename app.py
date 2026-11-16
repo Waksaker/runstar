@@ -215,8 +215,8 @@ def update():
     return redirect(url_for('index'))
 @app.route('/app/runalltransfer/')
 def runalltransfer():
-    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
-    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\alltransfer.py"
+    filepython = r"C:\Users\Administrator\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\Administrator\Desktop\runstar\alltransfer.py"
     arahan = [filepython, filerun]
     try:
         if not os.path.isfile(filepython):
@@ -245,8 +245,8 @@ def runalltransfer():
         }), 500
 @app.route('/app/runalltrade/')
 def runalltrade():
-    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
-    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\alltrade.py"
+    filepython = r"C:\Users\Administrator\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\Administrator\Desktop\runstar\alltrade.py"
     arahan = [filepython, filerun]
     try:
         if not os.path.isfile(filepython):
@@ -275,8 +275,8 @@ def runalltrade():
         }), 500
 @app.route('/app/autorun/')
 def autorun():
-    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
-    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\autorun.py"
+    filepython = r"C:\Users\Administrator\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\Administrator\Desktop\runstar\autorun.py"
     arahan = [filepython, filerun]
     try:
         if not os.path.isfile(filepython):
@@ -305,8 +305,8 @@ def autorun():
         }), 500
 @app.route('/app/runallprofit/')
 def runallprofit():
-    filepython = r"C:\Users\faris\OneDrive\Desktop\runstar\venv\Scripts\python.exe"
-    filerun = r"C:\Users\faris\OneDrive\Desktop\runstar\allprofit.py"
+    filepython = r"C:\Users\Administrator\Desktop\runstar\venv\Scripts\python.exe"
+    filerun = r"C:\Users\Administrator\Desktop\runstar\allprofit.py"
     arahan = [filepython, filerun]
     try:
         if not os.path.isfile(filepython):
@@ -437,63 +437,105 @@ def deletepct(deleteid):
     cursor.close()
     conn.close()
     return redirect(url_for('percentage'))
-@app.route('/printprofit', methods=['GET', 'POST'])
-def printprofit():
+@app.route('/profitaction', methods=['GET', 'POST'])
+def profitaction():
+    status = None
+    dateprofit = None
+    conn = connect_database()
+    cursor = conn.cursor()
     if request.method == 'POST':
         dateprofit = request.form.get('dateprofit')
-        conn = connect_database()
+        button_status = request.form.get('buttonaction')
+        if button_status == "print":
+            status = "print"
+            cursor.execute("""
+                SELECT 
+                    b.*,
+                    a.username,
+                    a.password
+                FROM 
+                    `pengguna` AS a
+                LEFT JOIN
+                    `profitlock` AS b
+                ON
+                    a.id = b.iduser
+                WHERE
+                    b.date = %s
+            """, (dateprofit,))
+            rows = cursor.fetchall()
+            data = []
+            no = 1
+            for row in rows:
+                data.append({
+                    "no": no,
+                    "id": row[0],
+                    "iduser": row[1],
+                    "date": row[2],
+                    "profit": row[3],
+                    "lock": row[4],
+                    "updated": row[5],
+                    "username": row[6],
+                    "password": row[7]
+                })
+                no += 1
+            cursor1 = conn.cursor()
+            cursor1.execute("""
+                SELECT 
+                    SUM(`profit`) AS total_profit,
+                    SUM(`lock`) AS total_lock
+                FROM 
+                    `profitlock`
+                WHERE
+                    `date` = %s
+            """, (dateprofit,))
+            row1 = cursor1.fetchone()
+            total_profit = round(float(row1[0]), 2) if row1[0] else "0.00"
+            total_lock = round(float(row1[1]), 2) if row1[1] else "0.00"
+            cursor.close()
+            cursor1.close()
+            conn.close()
+            return render_template(
+                "printprofit.html",
+                data=data,
+                total_profit=total_profit,
+                total_lock=total_lock,
+            )
+        elif button_status == "delete":
+            status = "delete"
+            cursor2 = conn.cursor()
+            cursor2.execute("""
+                DELETE FROM `profitlock` WHERE `date` = %s
+            """, (dateprofit,))
+            conn.commit()
+            cursor2.close()
+            conn.close()
+            return redirect(url_for('profitlock'))
+    return redirect(url_for('profitlock'))
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    conn = connect_database()
+    if request.method == 'POST':
+        iduser = request.form.get('iduser')
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT 
-                b.*,
-                a.username,
-                a.password
-            FROM 
-                `pengguna` AS a
-            LEFT JOIN
-                `profitlock` AS b
-            ON
-                a.id = b.iduser
+            SELECT * FROM `pengguna` WHERE `id` = %s
+        """, (iduser,))
+        rows = cursor.fetchone()
+        jumlah_trade = rows[3] + 1
+        cursor.execute("""
+            UPDATE
+                `pengguna` 
+            SET 
+                `trades` = %s,
+                `status` = %s,
+                `masa_akhir` = %s
             WHERE
-                b.date = %s
-        """, (dateprofit,))
-        rows = cursor.fetchall()
-        data = []
-        no = 1
-        for row in rows:
-            data.append({
-                "no": no,
-                "id": row[0],
-                "iduser": row[1],
-                "date": row[2],
-                "profit": row[3],
-                "lock": row[4],
-                "updated": row[5],
-                "username": row[6],
-                "password": row[7]
-            })
-            no += 1
-        cursor1 = conn.cursor()
-        cursor1.execute("""
-            SELECT 
-                SUM(`profit`) AS total_profit,
-                SUM(`lock`) AS total_lock
-            FROM 
-                `profitlock`
-            WHERE
-                `date` = %s;
-        """, (dateprofit,))
-        row1 = cursor1.fetchone()
-        total_profit = round(float(row1[0]), 2) if row1[0] else "0.00"
-        total_lock = round(float(row1[1]), 2) if row1[1] else "0.00"
+                `id` = %s
+        """, (jumlah_trade, '0', '0000-00-00 00:00:00', iduser))
+        
+        conn.commit()  # ⚠️ Jangan lupa kurungan () — bukan conn.commit sahaja
         cursor.close()
-        cursor1.close()
-        conn.close() 
-    return render_template(
-        "printprofit.html",
-        data=data,
-        total_profit=total_profit,
-        total_lock=total_lock,
-    )
+        conn.close()
+    return redirect(url_for('index'))
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -2,10 +2,16 @@
 <script src="{{ url_for('static', filename='datatables/datatables.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='datatables/datatables.css') }}" />
 <div>
-    <form action="{{ url_for('printprofit') }}" method="post" target="_blank" style="display: inline;">
+    <form action="{{ url_for('profitaction') }}" method="post" style="display: inline;" target="_blank">
         <input type="hidden" name="dateprofit" value="{{ tarikh }}">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" name="buttonaction" value="print">
             <img src="{{ url_for('static', filename='images/print.png') }}" style="width: 24px; height: 24px; border: none;">
+        </button>
+    </form>
+    <form action="{{ url_for('profitaction') }}" method="post" style="display: inline;" onclick="return confirm('Are you sure you want to delete all in this month?')">
+        <input type="hidden" name="dateprofit" value="{{ tarikh }}">
+        <button type="submit" class="btn btn-danger" name="buttonaction" value="delete">
+            <img src="{{ url_for('static', filename="images/Trash_Can.png")}}" style="width: 24px; height: 24px; border: none;">
         </button>
     </form> 
 </div>

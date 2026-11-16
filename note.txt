@@ -1,4 +1,4 @@
 Intall package
 1) run "python --version" (Jika tiada kene install python)
 2) run "python -m venv venv" (install dalam projek runstar)  
-3) python -m pip install Flask tzdata requests mysql-connector-python selenium undetected-chromedriver playsound
+3) python -m pip install Flask tzdata requests mysql-connector-python selenium undetected-chromedriver playsound setuptools==69.5.1

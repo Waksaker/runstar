@@ -374,7 +374,14 @@
                         render: function (data, type, row) {
 							if (type !== 'display') return data;
 							if (data.status == 1) {
-								return '-';
+								return `
+                                    <form action="{{ url_for('reset') }}" method="POST"  onclick="return confirm('Are you sure you want to reset this user?')">
+                                        <input type="text" name="iduser" value="${row.id}" style="display:none;">
+                                        <button type="submit" class="btn btn-danger">
+                                            <img src="{{ url_for('static', filename="images/reset.png") }}" style="width: 24px; height: 24px; border: none;">    
+                                        </button>
+                                    </form>
+                                `;
 							}
 							if (data.status == 0) {
 								return `
