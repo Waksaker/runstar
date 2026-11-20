@@ -161,9 +161,10 @@ def edit_user(user_id):
         status = request.form['status']
         transfer = request.form['transfer']
         statrade = request.form['statrade']
+        masa_akhir = datetime.strptime(request.form['masa_akhir'], '%Y-%m-%dT%H:%M').strftime("%Y-%m-%d %H:%M:%S")
         cursor.execute(
-            "UPDATE pengguna SET username=%s, password=%s, trades=%s, status=%s, statrade=%s, statranfer=%s, runtrans=%s WHERE id=%s",
-            (username, password, trades, status, statrade, transfer, transfer, user_id)
+            "UPDATE pengguna SET username=%s, password=%s, trades=%s, status=%s, statrade=%s, statranfer=%s, runtrans=%s, masa_akhir=%s WHERE id=%s",
+            (username, password, trades, status, statrade, transfer, transfer, masa_akhir, user_id)
         )
         conn.commit()
         cursor.close()

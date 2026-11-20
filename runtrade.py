@@ -1,6 +1,7 @@
 import undetected_chromedriver as uc
 import time
 import mysql.connector
+from mysql.connector import cursor
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -45,18 +46,52 @@ def updatepercentage(teks_pct, iduser):
         cursor.execute("INSERT INTO log_percent (percent, date) VALUES (%s, %s)", (teks_pct, tarikh))
         conn.commit()
 
+
+def updatedonetrade(iduser, masa_akhir, trades_star_num):
+    # ✅ Tukar kepada nombor — INI PENTING!
+    iduser = int(iduser)
+    trades_star_num = int(trades_star_num)
+
+    if masa_akhir == '0000-00-00 00:00:00':
+        status = 0
+    else:
+        status = 1
+
+    print(f"ID: {iduser}, masa akhir: {masa_akhir}, Total trades: {trades_star_num}")
+    conn = connect_database()
+    cursor = conn.cursor()
+    try:
+        sql = "UPDATE `pengguna` SET `trades`=%s, `status`=%s, `masa_akhir`=%s WHERE `id`=%s"
+        val = (trades_star_num, status, masa_akhir, iduser)
+        print(f"Nilai sebenar dihantar: {val}")
+        cursor.execute(sql, val)
+        conn.commit()
+        print(f"Berjaya! Baris dikemaskini: {cursor.rowcount}")
+
+        # Semak terus keputusan
+        cursor.execute("SELECT `trades`, `status`, `masa_akhir` FROM `pengguna` WHERE `id`=%s", (iduser,))
+        hasil = cursor.fetchone()
+        print(f"Data Terkini: trades={hasil[0]}, status={hasil[1]}, masa_akhir={hasil[2]}")
+
+    except Exception as e:
+        print(f"❌ Ralat: {e}")
+        conn.rollback()
+    finally:
+        cursor.close()
+        conn.close()
+
 def main():
     db = None
     cursor = None
     driver = None
 
-    if len(sys.argv) > 1:
+    if len(sys.argv) >= 4:
         username_input = sys.argv[1]
         password_input = sys.argv[2]
         id_input = sys.argv[3]
     else:
         print("Sila berikan nama pengguna, kata laluan, dan ID sebagai argumen.")
-        return
+        sys.exit(1)
 
     try:
         db = connect_database()
@@ -80,7 +115,7 @@ def main():
 
         driver = uc.Chrome(
             option=options,
-            version_main=155,
+            version_main=157,
             supprress_welcome=True,
             headless=False
         )
@@ -98,21 +133,22 @@ def main():
         time.sleep(6)
         # === BAHAGIAN KLIK BUTANG BAHASA ===
         try:
-            # Tunggu butang sedia & cari berdasarkan atribut data-lang="en"
-            wait = WebDriverWait(driver, 15)
+            wait = WebDriverWait(driver, 15)  # Naikkan masa tunggu
+            # Langkah 1: Klik butang MY untuk buka menu
             lang_btn = wait.until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, 'button.lang-btn[data-lang="en"]')
-                )
+                EC.element_to_be_clickable((By.CLASS_NAME, "lang-current"))
             )
-            # Tatal ke butang jika tersembunyi
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", lang_btn)
-            time.sleep(0.5)
             lang_btn.click()
-            print("Berjaya mengklik butang MY/EN English")
-            time.sleep(1)
+            print("✅ Berjaya mengklik butang MY")
+            time.sleep(1.5)  # Beri masa menu terbuka
+            # Langkah 2: Klik English — guna XPath yang lebih fleksibel
+            en_button = wait.until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(@data-lang, 'en')]"))
+            )
+            en_button.click()
+            print("✅ Berjaya klik butang English")
         except Exception as e:
-            print(f"Gagal mengklik butang: {repr(e)}")
+            print(f"❌ Gagal: {repr(e)}")
         # === TAMAT BAHAGIAN KLIK ===
         time.sleep(6)
         # === 2. ISI NAMA PENGGUNA ===
@@ -195,10 +231,10 @@ def main():
         )
         time.sleep(6)
         try:
-            wait_pct = WebDriverWait(driver, 10)
+            wait_pct = WebDriverWait(driver, 15)
             element_pct = wait_pct.until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//span[normalize-space(text())="Profit per Trade"]/following-sibling::span[@class="limit-value success"]')
+                EC.visibility_of_element_located(
+                    (By.XPATH, "//span[@class='limit-value success' and contains(text(), '%')]")
                 )
             )
             teks_pct = element_pct.text.strip()
@@ -208,59 +244,110 @@ def main():
             print(f"Nilai peratus: {repr(e)}")
         time.sleep(6)
         try:
-            wait_trade = WebDriverWait(driver, 10)
-            percubaan_maksimum = 5
-            berjaya = False
-            for percubaan in range(1, percubaan_maksimum + 1):
-                print(f"Percubaan {percubaan}/{percubaan_maksimum}")
-                #tekan butang max
-                try:
-                    butang_max = wait_trade.until(
-                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.percentage-btn.max"))
-                    )
-                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_max)
-                    time.sleep(0.5)
-                    butang_max.click()
-                    print("Butang max ditekan")
-                    time.sleep(1)
-                except Exception as e:
-                    print(f"Gagal tekan max: {repr(e)}")
-                    time.sleep(1)
-                    continue
-                #tekan butang Buy BYC
-                try:
-                    butang_buy = wait_trade.until(
-                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.submit-btn.buy"))
-                    )
-                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_buy)
-                    time.sleep(0.5)
-                    butang_buy.click()
-                    print(f"Butang BTC ditekan")
-                    updateruntrade(id_input)
-                    berjaya = True
-                    break
-                except Exception as e:
-                    print(f"Butang buy BTC belum sedia")
-                    time.sleep(1)
-                    continue
-            if not berjaya:
-                print(f"Gagal selepas {percubaan_maksimum} kali percubaan.")
-        except Exception as e:
-            print(f"Gagal tekan max dan trade: {repr(e)}")
-        time.sleep(13)
-        # Tunggu & tekan butang tutup (X)
-        try:
-            wait_close = WebDriverWait(driver, 10)
-            butang_tutup = wait_close.until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.close-btn"))
+            # Untuk ambik trade di starlika 
+            wait = WebDriverWait(driver, 10)
+            elem = wait.until(
+                EC.visibility_of_element_located((By.ID, "remainingTradesValue"))
             )
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_tutup)
-            time.sleep(0.5)
-            butang_tutup.click()
-            print("[OK] Butang tutup (X) ditekan")
-            time.sleep(1)
+            teks = elem.text
+            trades_star = teks.replace("trades", "").strip() 
+            db = connect_database()
+            cursor = db.cursor()
+            cursor.execute("""
+                SELECT
+                    *
+                FROM
+                    `pengguna`
+                WHERE
+                    `id` = %s
+            """, (id_input,))
+            rows = cursor.fetchone()
+            if not rows:
+                print(f"Tiada pengguna dengan ID: {id_input}")
+                sys.exit(1)
+            trades_data = rows[3]
+            trades_star_num = int(trades_star)
+            trades_data_num = int(trades_data)
+            print(f"Total Starlika: {trades_star_num}, Total Database {trades_data_num}")
+            if trades_star_num == trades_data_num:
+                print(f"Sama")
+                try:
+                    wait_trade = WebDriverWait(driver, 10)
+                    percubaan_maksimum = 5
+                    berjaya = False
+                    for percubaan in range(1, percubaan_maksimum + 1):
+                        print(f"Percubaan {percubaan}/{percubaan_maksimum}")
+                        #tekan butang max
+                        try:
+                            butang_max = wait_trade.until(
+                                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.percentage-btn.max"))
+                            )
+                            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_max)
+                            time.sleep(0.5)
+                            butang_max.click()
+                            print("Butang max ditekan")
+                            time.sleep(1)
+                        except Exception as e:
+                            print(f"Gagal tekan max: {repr(e)}")
+                            time.sleep(1)
+                            continue
+                        #tekan butang Buy BYC
+                        try:
+                            butang_buy = wait_trade.until(
+                                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.submit-btn.buy"))
+                            )
+                            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_buy)
+                            time.sleep(0.5)
+                            butang_buy.click()
+                            print(f"Butang BTC ditekan")
+                            updateruntrade(id_input)
+                            berjaya = True
+                            break
+                        except Exception as e:
+                            print(f"Butang buy BTC belum sedia")
+                            time.sleep(1)
+                            continue
+                    if not berjaya:
+                        print(f"Gagal selepas {percubaan_maksimum} kali percubaan.")
+                except Exception as e:
+                    print(f"Gagal tekan max dan trade: {repr(e)}")
+                time.sleep(13)
+                # Tunggu & tekan butang tutup (X)
+                try:
+                    wait_close = WebDriverWait(driver, 10)
+                    butang_tutup = wait_close.until(
+                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.close-btn"))
+                    )
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", butang_tutup)
+                    time.sleep(0.5)
+                    butang_tutup.click()
+                    print("[OK] Butang tutup (X) ditekan")
+                    time.sleep(1)
+                except Exception as e:
+                    print(f"[AMARAN] Gagal tekan butang tutup: {repr(e)}")
+            elif trades_star_num != trades_data_num:
+                print(f"Tidak sama")
+                try:
+                    wait = WebDriverWait(driver, 10)
+                    element = wait.until(
+                        EC.visibility_of_element_located((By.CLASS_NAME, "member-time"))
+                    )
+                    masakini = datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))
+                    # Tukar format mengikut teks sebenar yang awak dapat
+                    teks_dari_laman = element.text.strip()
+                    masa_asas = datetime.strptime(teks_dari_laman, "%m/%d/%Y, %H:%M")
+                    # Tambah 5 minit
+                    masa_tambah = masa_asas + timedelta(minutes=5)
+                    # Tetapkan saat ikut masa sekarang
+                    masa_tambah = masa_tambah.replace(second=masakini.second)
+                    # Papar dalam format HH:MM:SS
+                    masa_akhir = masa_tambah.strftime("%Y-%m-%d %H:%M:%S")
+                    updatedonetrade(id_input, masa_akhir, trades_star_num)
+                except Exception as e:
+                    print(f"Tidak dapat ambik tarik unlock: {repr(e)}")
+                    updatedonetrade(id_input, "0000-00-00 00:00:00", trades_star_num)
         except Exception as e:
-            print(f"[AMARAN] Gagal tekan butang tutup: {repr(e)}")
+            print(f"Gagal proses untuk trade: {repr(e)}")
         time.sleep(6)
         driver.get(url_logout)
         time.sleep(6)

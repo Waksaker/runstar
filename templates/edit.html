@@ -78,36 +78,40 @@
         <form method="POST" action="{{ url_for('edit_user', user_id=user.id ) }}">
             <div class="mb-3">
                 <label for="username" class="form-label">Nama Pengguna</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" style="max-width: 300px;" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Kata Laluan</label>
-                <input type="text" class="form-control" id="password" name="password" value="{{ user.password }}" required>
+                <input type="text" class="form-control" id="password" name="password" value="{{ user.password }}" style="max-width: 300px;" required>
             </div>
             <div class="mb-3">
                 <label for="trades" class="form-label">Trades</label>
-                <input type="text" class="form-control" id="trades" name="trades" value="{{ user.trades }}" required>
+                <input type="text" class="form-control" id="trades" name="trades" value="{{ user.trades }}" style="max-width: 300px;">
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
-                <select class="form-control" id="status" name="status" required>
+                <select class="form-control" id="status" name="status" style="max-width: 300px;" required>
                     <option value="0" {% if user.status == 0 %}selected{% endif %}>Trade Ended</option>
                     <option value="1" {% if user.status == 1 %}selected{% endif %}>Trade Running</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="transfer" class="form-label">Transfer</label>
-                <select class="form-control" id="transfer" name="transfer" required>
+                <select class="form-control" id="transfer" name="transfer" style="max-width: 300px;" required>
                     <option value="0" {% if user.statranfer == 0 %}selected{% endif %}>No Transfer</option>
                     <option value="1" {% if user.statranfer == 1 %}selected{% endif %}>Transfer</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="statrade" class="from-label">Status Trade</label>
-                <select class="form-control" id="statrade" name="statrade" required>
+                <select class="form-control" id="statrade" name="statrade" style="max-width: 300px;" required>
                     <option value="0" {% if user.statrade == 0 %}selected{% endif %}>No Trade</option>
                     <option value="1" {% if user.statrade == 1 %}selected{% endif %}>Trade</option>
                 </select>
+            </div>
+            <div class="mb-3">
+                <label for="statrade" class="from-label">End Time</label>
+                <input type="datetime-local" class="form-control" id="masa_akhir" name="masa_akhir" value="{{ user.masa_akhir }}" style="max-width: 300px;" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
