@@ -48,7 +48,7 @@ def updatepercentage(teks_pct, iduser):
 
 
 def updatedonetrade(iduser, masa_akhir, trades_star_num):
-    # ✅ Tukar kepada nombor — INI PENTING!
+    # Tukar kepada nombor — INI PENTING!
     iduser = int(iduser)
     trades_star_num = int(trades_star_num)
 
@@ -74,7 +74,7 @@ def updatedonetrade(iduser, masa_akhir, trades_star_num):
         print(f"Data Terkini: trades={hasil[0]}, status={hasil[1]}, masa_akhir={hasil[2]}")
 
     except Exception as e:
-        print(f"❌ Ralat: {e}")
+        print(f"Ralat: {e}")
         conn.rollback()
     finally:
         cursor.close()
@@ -139,16 +139,16 @@ def main():
                 EC.element_to_be_clickable((By.CLASS_NAME, "lang-current"))
             )
             lang_btn.click()
-            print("✅ Berjaya mengklik butang MY")
+            print("Berjaya mengklik butang MY")
             time.sleep(1.5)  # Beri masa menu terbuka
             # Langkah 2: Klik English — guna XPath yang lebih fleksibel
             en_button = wait.until(
                 EC.element_to_be_clickable((By.XPATH, "//button[contains(@data-lang, 'en')]"))
             )
             en_button.click()
-            print("✅ Berjaya klik butang English")
+            print("Berjaya klik butang English")
         except Exception as e:
-            print(f"❌ Gagal: {repr(e)}")
+            print(f"Gagal: {repr(e)}")
         # === TAMAT BAHAGIAN KLIK ===
         time.sleep(6)
         # === 2. ISI NAMA PENGGUNA ===
