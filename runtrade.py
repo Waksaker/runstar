@@ -328,10 +328,8 @@ def main():
             elif trades_star_num != trades_data_num:
                 print(f"Tidak sama")
                 try:
-                    wait = WebDriverWait(driver, 10)
-                    element = wait.until(
-                        EC.visibility_of_element_located((By.CLASS_NAME, "member-time"))
-                    )
+                    semua = driver.find_elements(By.CLASS_NAME, "member-time")
+                    element = semua[1]
                     masakini = datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))
                     # Tukar format mengikut teks sebenar yang awak dapat
                     teks_dari_laman = element.text.strip()
@@ -342,6 +340,7 @@ def main():
                     masa_tambah = masa_tambah.replace(second=masakini.second)
                     # Papar dalam format HH:MM:SS
                     masa_akhir = masa_tambah.strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{masa_akhir}")
                     updatedonetrade(id_input, masa_akhir, trades_star_num)
                 except Exception as e:
                     print(f"Tidak dapat ambik tarik unlock: {repr(e)}")
