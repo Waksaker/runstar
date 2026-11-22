@@ -291,7 +291,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
-                            <th>Username & Password</th>
+                            <th>Username</th>
                             <th>Trade</th>
                             <th>Time End</th>
 			    <th>Status</th>
@@ -327,7 +327,7 @@
                     { 
                         data: null,
                         render: function(data, type, row){
-                            return "Username: " + data.username + '<br>' + "Password: " + data.password;
+                            return data.username;
                         } 
                     },
                     { data: 'trades' },

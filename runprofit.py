@@ -23,14 +23,14 @@ def profitlock(iduser, nilai_balance, nilai_trading):
     cursor.execute("SELECT * FROM profitlock WHERE date = %s AND iduser = %s", (date, iduser)) 
     row = cursor.fetchone()
     if row:
-        print(f"ADA")
+        #print(f"ADA")
         idu = row[1]
         tarikh = row[2]
-        print(f"ID: {idu}, Tarikh: {tarikh}")
+        #print(f"ID: {idu}, Tarikh: {tarikh}")
         cursor1.execute("UPDATE profitlock SET `profit` = %s, `lock` = %s, `updated` = %s WHERE `iduser` = %s AND `date` = %s", (nilai_balance, nilai_trading, datetime_full, idu, tarikh))
         db.commit
     else:
-        print(f"TIADA")
+        #print(f"TIADA")
         cursor1.execute("INSERT INTO profitlock (`iduser`, `date`, `profit`, `lock`, `updated`) VALUES (%s, %s, %s, %s, %s)", (iduser, date, nilai_balance, nilai_trading, datetime_full))
         db.commit()
 def updateprofit(iduser):
@@ -38,6 +38,32 @@ def updateprofit(iduser):
     cursor = conn.cursor()
     cursor.execute("UPDATE pengguna SET `staprofit` = '0' WHERE `id` = %s", (iduser,))
     conn.commit()
+def updatepengguna(id_input, trades_star):
+    try:
+        trades_sta = int(trades_star)
+    except (ValueError, TypeError):
+        trades_sta = 0
+    if trades_sta != 0:
+        profit_sta = 1
+    else:
+        profit_sta = 0
+    print(f"Trades: {trades_sta}, Profit: {profit_sta}")
+    conn = connect_database()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE
+            `pengguna`
+        SET
+            `trades` = %s,
+            `status` = %s,
+            `staprofit` = %s,
+            `masa_akhir` = %s
+        WHERE
+            `id` = %s
+    """, (trades_sta, '0', profit_sta, '0000-00-00 00:00:00', id_input))
+    conn.commit()
+    cursor.close()
+    conn.close()
 def main():
     db = None
     cursor = None
@@ -59,6 +85,7 @@ def main():
             return
         link = row["name"].rstrip("/")
         url_index = f"{link}/index.php"
+        url_trade = f"{link}/trade.php"
         url_logout = f"{link}/settings.php"
         options = uc.ChromeOptions()
         options.add_argument("--start-maximized")
@@ -69,7 +96,6 @@ def main():
             headless=False
         )
         driver.get(url_index)
-        time.sleep(3)
         # Tetapkan zoom selepas halaman mula dimuatkan
         driver.execute_script(
             "document.body.style.zoom = '50%'"
@@ -78,21 +104,23 @@ def main():
         print("URL semasa:", driver.current_url)
         # === BAHAGIAN KLIK BUTANG BAHASA ===
         try:
-            # Tunggu butang sedia & cari berdasarkan atribut data-lang="en"
-            wait = WebDriverWait(driver, 15)
+            wait = WebDriverWait(driver, 15)  # Naikkan masa tunggu
+            # Langkah 1: Klik butang MY untuk buka menu
             lang_btn = wait.until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, 'button.lang-btn[data-lang="en"]')
-                )
+                EC.element_to_be_clickable((By.CLASS_NAME, "lang-current"))
             )
-            # Tatal ke butang jika tersembunyi
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", lang_btn)
-            time.sleep(0.5)
             lang_btn.click()
-            print("Berjaya mengklik butang MY/EN English")
-            time.sleep(1)
+            print("Berjaya mengklik butang MY")
+            time.sleep(1.5)  # Beri masa menu terbuka
+            # Langkah 2: Klik English — guna XPath yang lebih fleksibel
+            en_button = wait.until(
+                EC.element_to_be_clickable((By.XPATH, "//button[contains(@data-lang, 'en')]"))
+            )
+            en_button.click()
+            print("Berjaya klik butang English")
         except Exception as e:
-            print(f"Gagal mengklik butang: {repr(e)}")
+            print(f"Gagal: {repr(e)}")
+        time.sleep(3)
         # === TAMAT BAHAGIAN KLIK ===
         # === 2. ISI NAMA PENGGUNA ===
         try:
@@ -159,6 +187,25 @@ def main():
             updateprofit(id_input)
         except Exception as e:
             print(f"Gagal: {e}")
+        time.sleep(5)
+        driver.get(url_trade)
+        time.sleep(5)
+        # Tetapkan zoom selepas halaman mula dimuatkan
+        driver.execute_script(
+            "document.body.style.zoom = '50%'"
+        )
+        time.sleep(5)
+        try:
+            # Untuk ambik trade di starlika
+            wait = WebDriverWait(driver, 10)
+            elem = wait.until(
+                EC.visibility_of_element_located((By.ID, "remainingTradesValue"))
+            )
+            teks = elem.text
+            trades_star = teks.replace("trades", "").strip()
+            updatepengguna(id_input, trades_star)
+        except Exception as e:
+            print(f"Gagal menarik total trade: {repr(e)}")
         time.sleep(5)
         driver.get(url_logout)
         time.sleep(5)
