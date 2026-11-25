@@ -63,6 +63,16 @@ def updatefunc(func):
         conn.commit()
     except Exception as e:
         print(f"Ralat semasa mengemaskini function: {repr(e)}")
+def update():
+    conn = connect_database()
+    cursor = conn.cursor(dictionary=True, buffered=True)
+    cursor.execute("UPDATE pengguna SET runtrans=%s WHERE statranfer=%s", (1, 1))
+    cursor1 = conn.cursor(dictionary=True)
+    cursor1.execute("UPDATE pengguna SET trades=%s, staprofit=%s", (3,1))
+    conn.commit()
+    cursor.close()
+    cursor1.close()
+    conn.close()
 def connect_database():
     try:
         conn = mysql.connector.connect(
@@ -169,6 +179,7 @@ def main():
                             else:
                                 print("Semua sudah selesai")
                                 updatefunc(0)
+                                update()
                                 break
                         else:
                             print(f"Masih Ada Running = {count2} | {count3}")

@@ -272,17 +272,14 @@
 		</div>
 	</div>
     <div class="container mt-4">
-         <a href="{{url_for('update')}}" class="btn btn-danger">Update</a> ||
         <a href="{{ url_for('add_user')}}" class="btn btn-primary">Add Account</a> 
         <a href="{{url_for('percentage')}}" class="btn btn-primary">Percentage</a> 
 	<a href="{{url_for('profitlock')}}" class="btn btn-primary">Profit & Lock</a> ||
-	<!-- {% if statusupdate == 'update' %}
-	    <a href="{{url_for('update')}}" class="btn btn-danger">Update</a>
-	{% endif %} --!>
-		<button onclick="autorun()" class="btn btn-primary">Autorun</button>
-		<button onclick="alltrade()" class="btn btn-primary">Trade All</button>
-		<button onclick="profitlock()" class="btn btn-primary">Profitlock All</button>
-		<button onclick="alltransfer()" class="btn btn-primary">Transfer All</button>
+        <button onclick="autorun()" class="btn btn-primary">Autorun</button> ||
+        <a href="{{url_for('update')}}" class="btn btn-danger">Update</a>
+        <button onclick="alltrade()" class="btn btn-primary">Trade All</button>
+        <button onclick="alltransfer()" class="btn btn-primary">Transfer All</button>
+        <button onclick="profitlock()" class="btn btn-primary">Profitlock All</button>
     </div>
     <div class="container mt-4">
         <div class="desktop-table mt-4">
