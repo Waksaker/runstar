@@ -58,18 +58,29 @@ def index():
         link=link,
         statusupdate = statusupdate
     )
-@app.route("/submit", methods=["POST"])
+
+@app.route("/submit", methods=["GET", "POST"])
 def submit():
     db = connect_database()
     cursor = db.cursor()
-    # Get the link from the form submission
-    link = request.form.get("link")
-    # Insert the link into the database
-    cursor.execute("UPDATE link SET name = %s WHERE id = 1", (link,))
-    db.commit()
+    if request.method == 'POST':
+        # Get the link from the form submission
+        link = request.form.get("link")
+        # Insert the link into the database
+        cursor.execute("UPDATE link SET name = %s WHERE id = 1", (link,))
+        db.commit()
+        cursor.close()
+        db.close()
+        return redirect(url_for('index'))
+    cursor.execute("SELECT * FROM link")
+    rows = cursor.fetchone()
+    link = rows[1] if rows else ""
     cursor.close()
     db.close()
-    return redirect(url_for('index'))
+    return render_template(
+        "link.html",
+        link=link
+    )
 @app.route('/app/masa')
 def masa():
     waktu_msia = datetime.now(ZoneInfo("Asia/Kuala_Lumpur"))
